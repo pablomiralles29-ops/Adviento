@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calendario de Adviento 🎄</title>
+<meta name="theme-color" content="#0e1828">
+
+<!-- Vista previa del enlace en WhatsApp: cambia TU-USUARIO por tu usuario de GitHub -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tu calendario de Adviento 🎄">
+<meta property="og:description" content="Una puerta cada día hasta Nochebuena. Ábrelo 🎁">
+<meta property="og:image" content="https://TU-USUARIO.github.io/adviento/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --noche:#0e1828; --noche2:#18263d;
+    --oro:#e0bd6a; --oro-suave:#f3e2b3;
+    --rojo:#8f2633; --verde:#1e4a3a; --crema:#efe5d0; --azul:#2a3f66;
+    --tinta:#2b1d14;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{background:#0e1828}
+  html,body{min-height:100%}
+  body{
+    font-family:"DM Sans",system-ui,sans-serif;
+    color:var(--oro-suave);
+    background:
+      radial-gradient(120% 60% at 50% 0%, #22365a 0%, transparent 60%),
+      linear-gradient(180deg,var(--noche2),var(--noche) 70%);
+    background-attachment:fixed;
+    -webkit-tap-highlight-color:transparent;
+    overflow-x:hidden;
+  }
+  #nieve{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+  main{position:relative;z-index:1;max-width:760px;margin:0 auto;
+       padding:calc(28px + env(safe-area-inset-top)) 16px calc(40px + env(safe-area-inset-bottom))}
+
+  header{text-align:center;margin-bottom:26px}
+  .kicker{font-size:.78rem;letter-spacing:.28em;text-transform:uppercase;color:var(--oro);opacity:.9}
+  h1{font-family:"Fraunces",Georgia,serif;font-weight:400;font-style:italic;
+     font-size:clamp(2.4rem,10vw,3.6rem);line-height:1.05;margin:.25em 0 .2em;color:#fff6e2}
+  h1 b{font-weight:600;color:var(--oro)}
+  .estado{font-size:.98rem;opacity:.85;min-height:1.4em}
+  .adorno{display:block;margin:14px auto 0;width:120px;height:10px;opacity:.7}
+
+  /* ---------- Rejilla de puertas ---------- */
+  .marco{container-type:inline-size}
+  .rejilla{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;grid-auto-flow:dense;
+           grid-auto-rows:calc((100cqw - 30px) / 4 * 1.12)}
+  @media (min-width:620px){.rejilla{grid-template-columns:repeat(6,1fr);gap:12px;
+           grid-auto-rows:calc((100cqw - 60px) / 6 * 1.12)}}
+
+  .puerta{
+    position:relative;border:0;background:none;cursor:pointer;
+    perspective:700px;font:inherit;color:inherit;border-radius:10px;
+  }
+  .puerta.grande{grid-column:span 2;grid-row:span 2}
+  .puerta.ancha{grid-column:span 2}
+  @media (min-width:620px){.puerta.ancha-d{grid-column:span 2}}
+
+  /* Hueco que aparece al abrir */
+  .hueco{
+    position:absolute;inset:0;border-radius:10px;
+    background:radial-gradient(circle at 50% 40%, #3a2a1c, #1a120c);
+    box-shadow:inset 0 3px 12px rgba(0,0,0,.7);
+    display:grid;place-items:center;font-size:clamp(1.6rem,7vw,2.3rem);
+  }
+  .grande .hueco{font-size:clamp(3rem,14vw,4.4rem)}
+  .hueco .icono{transform:scale(.4);opacity:0;transition:.5s .35s cubic-bezier(.3,1.6,.5,1)}
+  .abierta .hueco .icono{transform:scale(1);opacity:1}
+
+  /* La hoja de la puerta */
+  .hoja{
+    position:absolute;inset:0;border-radius:10px;transform-origin:0% 50%;
+    transition:transform .8s cubic-bezier(.6,.05,.25,1);transform-style:preserve-3d;
+    display:grid;place-items:center;
+    background:var(--c,var(--rojo));
+    box-shadow:0 6px 14px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.08);
+  }
+  .hoja::before{ /* marco interior dorado */
+    content:"";position:absolute;inset:6px;border-radius:6px;
+    border:1.5px dashed color-mix(in srgb,var(--oro) 70%,transparent);
+  }
+  .hoja::after{ /* pomo */
+    content:"";position:absolute;right:9px;top:50%;width:6px;height:6px;margin-top:-3px;
+    border-radius:50%;background:var(--oro);box-shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+  .num{
+    font-family:"Fraunces",Georgia,serif;font-weight:700;
+    font-size:clamp(1.5rem,6.5vw,2.1rem);color:var(--oro);
+    text-shadow:0 1px 0 rgba(0,0,0,.25);
+  }
+  .grande .num{font-size:clamp(3rem,15vw,4.6rem)}
+  .puerta[data-tono="crema"] .hoja{--c:var(--crema)}
+  .puerta[data-tono="crema"] .num{color:var(--rojo)}
+  .puerta[data-tono="crema"] .hoja::before{border-color:color-mix(in srgb,var(--rojo) 45%,transparent)}
+  .puerta[data-tono="verde"] .hoja{--c:var(--verde)}
+  .puerta[data-tono="azul"]  .hoja{--c:var(--azul)}
+
+  .abierta .hoja{transform:rotateY(-108deg);box-shadow:none}
+  .abierta .hoja .num{opacity:.0;transition:opacity .2s .4s}
+
+  /* Bloqueada */
+  .bloqueada .hoja{filter:saturate(.55) brightness(.72)}
+  .bloqueada .num{opacity:.75}
+  .tiembla{animation:tiembla .45s}
+  @keyframes tiembla{20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+
+  /* La de hoy brilla */
+  .hoy:not(.abierta) .hoja{animation:brillo 2.2s ease-in-out infinite}
+  @keyframes brillo{
+    0%,100%{box-shadow:0 6px 14px rgba(0,0,0,.35),0 0 0 0 rgba(224,189,106,.0)}
+    50%{box-shadow:0 6px 14px rgba(0,0,0,.35),0 0 0 4px rgba(224,189,106,.55),0 0 26px 4px rgba(224,189,106,.35)}
+  }
+  .puerta:focus-visible{outline:2px solid var(--oro);outline-offset:3px}
+
+  footer{text-align:center;margin-top:30px;font-family:"Fraunces",Georgia,serif;font-style:italic;opacity:.75}
+
+  /* ---------- Modal ---------- */
+  .velo{
+    position:fixed;inset:0;z-index:10;display:grid;place-items:center;padding:20px;
+    background:rgba(6,10,18,.62);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+    opacity:0;pointer-events:none;transition:opacity .3s;
+  }
+  .velo.visible{opacity:1;pointer-events:auto}
+  .carta{
+    position:relative;width:min(440px,100%);max-height:88vh;overflow:auto;
+    background:
+      radial-gradient(120% 80% at 50% 0%, #fffaf0, #f3e8d2);
+    color:var(--tinta);border-radius:16px;padding:30px 24px 24px;text-align:center;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+    transform:translateY(24px) scale(.96);transition:transform .4s cubic-bezier(.2,1.2,.4,1);
+  }
+  .velo.visible .carta{transform:none}
+  .carta::before{content:"";position:absolute;inset:8px;border:1px solid rgba(143,38,51,.25);border-radius:11px;pointer-events:none}
+  .cerrar{
+    position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;
+    border:0;background:rgba(43,29,20,.07);color:var(--tinta);font-size:1.3rem;cursor:pointer;z-index:1
+  }
+  .carta .dia{font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;color:var(--rojo);font-weight:700}
+  .carta h2{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:1.65rem;line-height:1.15;margin:.35em 0 .55em}
+  .carta .big-icono{font-size:2.4rem;line-height:1;margin-bottom:6px}
+  .carta img{display:block;width:100%;border-radius:10px;margin:4px 0 16px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+  .carta p{font-size:1.04rem;line-height:1.6;white-space:pre-line;text-align:left}
+  .carta .vale{
+    margin:6px 0 4px;padding:18px 16px;border-radius:10px;
+    background:var(--rojo);color:#fff4dc;position:relative;
+    border:2px dashed rgba(255,244,220,.55);outline:6px solid var(--rojo);
+  }
+  .vale small{display:block;font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;opacity:.8;margin-bottom:6px}
+  .vale strong{font-family:"Fraunces",Georgia,serif;font-size:1.3rem;font-weight:600;line-height:1.25}
+  .carta .boton{
+    display:inline-block;margin-top:18px;padding:12px 22px;border-radius:999px;
+    background:var(--verde);color:#fff;text-decoration:none;font-weight:700
+  }
+  .carta .firma{margin-top:20px;font-family:"Fraunces",Georgia,serif;font-style:italic;color:var(--rojo)}
+  .carta > *:not(.cerrar){position:relative}
+
+  /* Aviso pequeño */
+  .aviso{
+    position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));z-index:20;
+    transform:translate(-50%,20px);opacity:0;transition:.3s;
+    background:#fff6e2;color:var(--tinta);padding:11px 18px;border-radius:999px;
+    font-size:.92rem;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.35);white-space:nowrap;max-width:92vw;
+    overflow:hidden;text-overflow:ellipsis
+  }
+  .aviso.visible{opacity:1;transform:translate(-50%,0)}
+  .modo-prueba{position:fixed;top:8px;left:8px;z-index:30;font-size:.7rem;background:#c0392b;color:#fff;padding:3px 8px;border-radius:6px}
+
+  @media (prefers-reduced-motion:reduce){
+    .hoja,.carta,.hueco .icono{transition:none}
+    .hoy:not(.abierta) .hoja{animation:none}
+  }
+</style>
+</head>
+<body>
+<canvas id="nieve" aria-hidden="true"></canvas>
+
+<main>
+  <header>
+    <div class="kicker">Calendario de Adviento</div>
+    <h1>para <b id="nombre">ti</b></h1>
+    <p class="estado" id="estado"></p>
+    <svg class="adorno" viewBox="0 0 120 10" aria-hidden="true">
+      <path d="M0 5h48M72 5h48" stroke="#e0bd6a" stroke-width="1"/>
+      <path d="M60 0l5 5-5 5-5-5z" fill="#e0bd6a"/>
+    </svg>
+  </header>
+
+  <div class="marco"><section class="rejilla" id="rejilla" aria-label="Puertas del calendario"></section></div>
+
+  <footer id="pie"></footer>
+</main>
+
+<div class="velo" id="velo" role="dialog" aria-modal="true" aria-labelledby="carta-titulo">
+  <article class="carta" id="carta"></article>
+</div>
+<div class="aviso" id="aviso" role="status"></div>
+
+<script src="mensajes.js"></script>
+<script>
+(function(){
+  const C = window.CALENDARIO || CALENDARIO;
+  const $ = (s) => document.querySelector(s);
+
+  /* ---------- Fecha de hoy en hora de España ---------- */
+  const params = new URLSearchParams(location.search);
+  const prueba = params.has(C.clavePrueba || "probar");
+
+  function hoyMadrid(){
+    if (prueba && params.get("hoy")) {            // solo para probar: ?probar&hoy=2026-12-05
+      const [y,m,d] = params.get("hoy").split("-").map(Number);
+      return {y,m,d};
+    }
+    const partes = new Intl.DateTimeFormat("en-CA",{timeZone:"Europe/Madrid",year:"numeric",month:"numeric",day:"numeric"})
+      .formatToParts(new Date());
+    const v = t => Number(partes.find(p => p.type === t).value);
+    return {y:v("year"), m:v("month"), d:v("day")};
+  }
+  const hoy = hoyMadrid();
+  const ANIO = C.anio;
+  const diaActual = (hoy.y === ANIO && hoy.m === 12) ? hoy.d : (hoy.y > ANIO ? 99 : 0);
+  const disponible = n => (prueba && !params.get("hoy")) || diaActual >= n;
+
+  /* ---------- Puertas abiertas (se recuerdan en el móvil) ---------- */
+  const CLAVE = "adviento-abiertas-" + ANIO;
+  let abiertas = [];
+  try { abiertas = JSON.parse(localStorage.getItem(CLAVE)) || []; } catch(e){}
+  const guardar = () => { try { localStorage.setItem(CLAVE, JSON.stringify(abiertas)); } catch(e){} };
+
+  /* ---------- Cabecera ---------- */
+  $("#nombre").textContent = C.nombre || "ti";
+  $("#pie").textContent = C.firma || "";
+  const estado = $("#estado");
+  if (diaActual === 0) {
+    const falta = Math.round((Date.UTC(ANIO,11,1) - Date.UTC(hoy.y,hoy.m-1,hoy.d)) / 864e5);
+    estado.textContent = falta === 1 ? "Mañana se abre la primera puerta ✨"
+                                     : `Faltan ${falta} días para abrir la primera puerta ✨`;
+  } else if (diaActual <= 24) {
+    estado.textContent = diaActual === 24 ? "Hoy se abre la última puerta 🎁"
+                                          : `Hoy toca la puerta ${diaActual} 🎁`;
+  } else {
+    estado.textContent = "Feliz Navidad ❤️";
+  }
+  if (prueba) {
+    const b = document.createElement("div");
+    b.className = "modo-prueba"; b.textContent = "MODO PRUEBA";
+    document.body.appendChild(b);
+  }
+
+  /* ---------- Construir las puertas ---------- */
+  const orden = [7,18,3,12,24,1,15,9,21,5,14,10,2,19,8,23,4,13,17,11,22,6,16,20];
+  const tonos = ["rojo","verde","crema","azul","rojo","crema","verde","rojo","azul","crema","verde","rojo"];
+  const rejilla = $("#rejilla");
+
+  orden.forEach((n,i) => {
+    const info = (C.dias && C.dias[n]) || {};
+    const btn = document.createElement("button");
+    btn.className = "puerta";
+    btn.dataset.dia = n;
+    btn.dataset.tono = tonos[i % tonos.length];
+    if (n === 24) btn.classList.add("grande");
+    if (n === 1) btn.classList.add("ancha");          // así la rejilla queda completa
+    if (n === 12 || n === 18) btn.classList.add("ancha-d");
+    if (!disponible(n)) btn.classList.add("bloqueada");
+    if (n === diaActual) btn.classList.add("hoy");
+    if (abiertas.includes(n) && disponible(n)) btn.classList.add("abierta");
+    btn.setAttribute("aria-label", `Puerta del día ${n}`);
+    btn.innerHTML = `<span class="hueco"><span class="icono"></span></span><span class="hoja"><span class="num">${n}</span></span>`;
+    btn.querySelector(".icono").textContent = info.icono || "🎁";
+    btn.addEventListener("click", () => pulsar(btn, n));
+    rejilla.appendChild(btn);
+  });
+
+  /* ---------- Al tocar una puerta ---------- */
+  let avisoT;
+  function avisar(txt){
+    const a = $("#aviso"); a.textContent = txt; a.classList.add("visible");
+    clearTimeout(avisoT); avisoT = setTimeout(() => a.classList.remove("visible"), 2400);
+  }
+
+  function pulsar(btn, n){
+    if (!disponible(n)) {
+      btn.classList.remove("tiembla"); void btn.offsetWidth; btn.classList.add("tiembla");
+      const faltan = diaActual === 0
+        ? Math.round((Date.UTC(ANIO,11,n) - Date.UTC(hoy.y,hoy.m-1,hoy.d)) / 864e5)
+        : n - diaActual;
+      avisar(faltan === 1 ? "¡Mañana! Un poquito de paciencia 🤭" : `Aún no… faltan ${faltan} días 🤭`);
+      return;
+    }
+    if (btn.classList.contains("abierta")) { mostrar(n); return; }
+    btn.classList.add("abierta");
+    if (!abiertas.includes(n)) { abiertas.push(n); guardar(); }
+    if (n === 24 || n === diaActual) confeti(btn);
+    setTimeout(() => mostrar(n), 750);
+  }
+
+  /* ---------- La carta con el contenido ---------- */
+  const velo = $("#velo"), carta = $("#carta");
+  function el(tag, cls, txt){ const e = document.createElement(tag); if(cls) e.className = cls; if(txt!=null) e.textContent = txt; return e; }
+
+  function mostrar(n){
+    const d = (C.dias && C.dias[n]) || {titulo:"Día " + n};
+    carta.innerHTML = "";
+    const x = el("button","cerrar","×"); x.setAttribute("aria-label","Cerrar"); x.onclick = cerrar;
+    carta.append(x);
+    if (d.icono) carta.append(el("div","big-icono",d.icono));
+    carta.append(el("div","dia","Día " + n + " de diciembre"));
+    const h = el("h2",null,d.titulo || ""); h.id = "carta-titulo"; carta.append(h);
+    if (d.foto) { const img = el("img"); img.src = d.foto; img.alt = d.titulo || ""; img.loading = "lazy"; carta.append(img); }
+    if (d.texto) carta.append(el("p",null,d.texto));
+    if (d.vale) {
+      const v = el("div","vale"); v.append(el("small",null,"Vale por"), el("strong",null,d.vale)); carta.append(v);
+    }
+    if (d.enlace && d.enlace.url) {
+      const a = el("a","boton",d.enlace.texto || "Ábrelo"); a.href = d.enlace.url; a.target = "_blank"; a.rel = "noopener";
+      carta.append(a);
+    }
+    if (C.firma) carta.append(el("div","firma",C.firma));
+    velo.classList.add("visible");
+    carta.scrollTop = 0;
+    x.focus({preventScroll:true});
+  }
+  function cerrar(){ velo.classList.remove("visible"); }
+  velo.addEventListener("click", e => { if (e.target === velo) cerrar(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") cerrar(); });
+
+  /* ---------- Confeti pequeñito ---------- */
+  function confeti(origen){
+    const r = origen.getBoundingClientRect();
+    const colores = ["#e0bd6a","#8f2633","#f3e2b3","#2f7a5c","#ffffff"];
+    for (let i=0;i<36;i++){
+      const p = document.createElement("i");
+      const s = 5 + Math.random()*5;
+      Object.assign(p.style,{position:"fixed",left:(r.left+r.width/2)+"px",top:(r.top+r.height/2)+"px",
+        width:s+"px",height:s*0.6+"px",background:colores[i%colores.length],zIndex:15,borderRadius:"1px",pointerEvents:"none"});
+      document.body.appendChild(p);
+      const ang = Math.random()*Math.PI*2, dist = 60+Math.random()*110;
+      p.animate([
+        {transform:"translate(-50%,-50%) rotate(0)",opacity:1},
+        {transform:`translate(${Math.cos(ang)*dist}px,${Math.sin(ang)*dist+80}px) rotate(${Math.random()*720}deg)`,opacity:0}
+      ],{duration:1100+Math.random()*500,easing:"cubic-bezier(.2,.7,.4,1)"}).onfinish = () => p.remove();
+    }
+  }
+
+  /* ---------- Nieve ---------- */
+  const cv = $("#nieve"), cx = cv.getContext("2d");
+  let W,H,copos=[];
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function tam(){
+    const dpr = Math.min(devicePixelRatio||1,2);
+    W = innerWidth; H = innerHeight; cv.width = W*dpr; cv.height = H*dpr;
+    cv.style.width = W+"px"; cv.style.height = H+"px"; cx.setTransform(dpr,0,0,dpr,0,0);
+    const n = Math.round(Math.min(90, W*H/9000));
+    copos = Array.from({length:n},() => ({x:Math.random()*W,y:Math.random()*H,r:.6+Math.random()*2.2,
+      v:.25+Math.random()*.7,o:Math.random()*Math.PI*2,a:.35+Math.random()*.5}));
+  }
+  function bucle(){
+    cx.clearRect(0,0,W,H);
+    for (const c of copos){
+      c.y += c.v; c.o += .01; c.x += Math.sin(c.o)*.35;
+      if (c.y > H+5){ c.y = -5; c.x = Math.random()*W; }
+      cx.globalAlpha = c.a; cx.beginPath(); cx.arc(c.x,c.y,c.r,0,Math.PI*2); cx.fillStyle = "#fff"; cx.fill();
+    }
+    requestAnimationFrame(bucle);
+  }
+  addEventListener("resize", tam); tam();
+  if (!reduce) bucle();
+})();
+</script>
+</body>
+</html>
