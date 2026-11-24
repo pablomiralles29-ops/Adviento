@@ -17,7 +17,17 @@ const CALENDARIO = {
   firma: "Te quiero, tu chico", // cómo firmas los mensajes
   anio: 2026,                  // año del diciembre en que se abre
 
-  // Para que TÚ puedas ver todas las puertas antes de tiempo, abre:
+  // Estilo de las puertas: "clasico", "regalo", "sobre" o "bola"
+  estilo: "clasico",
+
+  // Días que salen como churros con chocolate 🍫 (pon [] para ninguno)
+  churros: [4, 11, 17, 22],
+
+  // 🔓 MODO PRUEBA: con true se pueden abrir TODAS las puertas ya mismo.
+  // ⚠️ Cámbialo a false ANTES de mandarle el enlace a ella.
+  abrirTodo: true,
+
+  // Otra forma de ver todas las puertas sin tocar lo de arriba:
   //   https://TU-USUARIO.github.io/adviento/?probar
   // (cambia la palabra si quieres que sea más secreta)
   clavePrueba: "probar",
