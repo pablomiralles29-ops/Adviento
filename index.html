@@ -55,6 +55,8 @@
   .version{display:inline-block;margin-top:8px;padding:4px 14px;border-radius:999px;
           font-family:"Fraunces",Georgia,serif;font-style:italic;font-size:1rem;color:#fff6e2;
           background:rgba(143,38,51,.85);border:1px solid rgba(224,189,106,.6);box-shadow:0 4px 14px rgba(0,0,0,.4)}
+  .juntos{margin-top:6px;font-size:.88rem;color:var(--oro);opacity:.95;text-shadow:0 1px 8px rgba(0,0,0,.8)}
+  .juntos:empty{display:none}
   header h1,header .estado{text-shadow:0 2px 6px rgba(0,0,0,.9),0 2px 18px rgba(0,0,0,.85)}
   h1{font-family:"Fraunces",Georgia,serif;font-weight:400;font-style:italic;
      font-size:clamp(2.4rem,10vw,3.6rem);line-height:1.05;margin:.25em 0 .2em;color:#fff6e2}
@@ -227,6 +229,22 @@
   .puerta.churro.hoy:not(.abierta) .churro-svg{animation:brillo-churro 2.2s ease-in-out infinite}
   @keyframes brillo-churro{50%{filter:drop-shadow(0 0 10px rgba(240,200,110,.95)) drop-shadow(0 5px 7px rgba(0,0,0,.45))}}
 
+  /* =================== ANIMACIÓN AL ABRIR =================== */
+  .fx{position:fixed;left:0;top:0;pointer-events:none;z-index:14;border-radius:50%}
+  .fx-rayos{width:300px;height:300px;margin:-150px 0 0 -150px;
+    background:repeating-conic-gradient(from 0deg,rgba(255,228,160,.75) 0 5deg,transparent 5deg 15deg);
+    -webkit-mask:radial-gradient(circle,#000 10%,transparent 68%);mask:radial-gradient(circle,#000 10%,transparent 68%)}
+  .fx-destello{width:220px;height:220px;margin:-110px 0 0 -110px;
+    background:radial-gradient(circle,rgba(255,250,225,1) 0%,rgba(255,215,130,.65) 28%,transparent 66%)}
+  .fx-anillo{width:120px;height:120px;margin:-60px 0 0 -60px;border:3px solid rgba(255,222,150,.95);
+    box-shadow:0 0 18px rgba(255,210,120,.8),inset 0 0 18px rgba(255,210,120,.6)}
+  .fx-p{position:fixed;left:0;top:0;pointer-events:none;z-index:15;line-height:1;will-change:transform,opacity}
+  .carta > .barrido{position:absolute;inset:0;border-radius:16px;overflow:hidden;pointer-events:none;z-index:3}
+  .barrido::before{content:"";position:absolute;top:-10%;bottom:-10%;width:45%;left:-70%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.85),rgba(255,236,180,.5),transparent);
+    transform:skewX(-18deg);animation:barrido 1.2s .5s cubic-bezier(.3,.6,.3,1) forwards}
+  @keyframes barrido{to{left:140%}}
+
   footer{text-align:center;margin-top:30px;font-family:"Fraunces",Georgia,serif;font-style:italic;opacity:.75}
 
   /* ---------- Modal ---------- */
@@ -298,6 +316,7 @@
     <div class="version">versión Nojavida ✨</div>
     <h1>para <b id="nombre">ti</b></h1>
     <p class="estado" id="estado"></p>
+    <p class="juntos" id="juntos"></p>
     <svg class="adorno" viewBox="0 0 120 10" aria-hidden="true">
       <path d="M0 5h48M72 5h48" stroke="#e0bd6a" stroke-width="1"/>
       <path d="M60 0l5 5-5 5-5-5z" fill="#e0bd6a"/>
@@ -322,6 +341,7 @@
 
   /* ---------- Fecha de hoy en hora de España ---------- */
   const params = new URLSearchParams(location.search);
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const prueba = params.has(C.clavePrueba || "probar") || C.abrirTodo === true;
 
   function hoyMadrid(){
@@ -400,6 +420,19 @@
     </svg>`;
   const diasChurro = Array.isArray(C.churros) ? C.churros : [];
 
+  /* ---------- Cuenta atrás para vernos ---------- */
+  let vernosUTC = null;
+  if (C.fechaVernos) {
+    const [vy,vm,vd] = C.fechaVernos.split("-").map(Number);
+    vernosUTC = Date.UTC(vy, vm-1, vd);
+    const f = Math.round((vernosUTC - Date.UTC(hoy.y,hoy.m-1,hoy.d)) / 864e5);
+    $("#juntos").textContent = f > 1 ? `❤️ Faltan ${f} días para vernos`
+                             : f === 1 ? "❤️ ¡Mañana nos vemos!"
+                             : f === 0 ? "❤️ ¡Hoy nos vemos!" : "";
+  }
+  const vernosEn = n => vernosUTC == null ? "" : Math.round((vernosUTC - Date.UTC(ANIO,11,n)) / 864e5);
+  const rellenar = (t, n) => String(t).replace(/\{vernos\}/g, vernosEn(n));
+
   /* ---------- Construir las puertas ---------- */
   const orden = [7,18,3,12,24,1,15,9,21,5,14,10,2,19,8,23,4,13,17,11,22,6,16,20];
   const tonos = ["rojo","verde","crema","azul","rojo","crema","verde","rojo","azul","crema","verde","rojo"];
@@ -444,18 +477,22 @@
       avisar(faltan === 1 ? "¡Mañana! Un poquito de paciencia 🤭" : `Aún no… faltan ${faltan} días 🤭`);
       return;
     }
-    if (btn.classList.contains("abierta")) { mostrar(n); return; }
+    if (btn.classList.contains("abierta")) { mostrar(n, btn, false); return; }
     btn.classList.add("abierta");
     if (!abiertas.includes(n)) { abiertas.push(n); guardar(); }
-    if (n === 24 || n === diaActual) confeti(btn);
-    setTimeout(() => mostrar(n), 750);
+    try { navigator.vibrate && navigator.vibrate([12, 60, 28]); } catch(e){}
+    if (!reduce) {
+      setTimeout(() => celebrar(btn, n), 320);
+      if (n === 24) setTimeout(lluviaCorazones, 900);
+    }
+    setTimeout(() => mostrar(n, btn, true), reduce ? 300 : 950);
   }
 
   /* ---------- La carta con el contenido ---------- */
   const velo = $("#velo"), carta = $("#carta");
   function el(tag, cls, txt){ const e = document.createElement(tag); if(cls) e.className = cls; if(txt!=null) e.textContent = txt; return e; }
 
-  function mostrar(n){
+  function mostrar(n, origen, especial){
     const d = (C.dias && C.dias[n]) || {titulo:"Día " + n};
     carta.innerHTML = "";
     const x = el("button","cerrar","×"); x.setAttribute("aria-label","Cerrar"); x.onclick = cerrar;
@@ -464,18 +501,102 @@
     carta.append(el("div","dia","Día " + n + " de diciembre"));
     const h = el("h2",null,d.titulo || ""); h.id = "carta-titulo"; carta.append(h);
     if (d.foto) { const img = el("img"); img.src = d.foto; img.alt = d.titulo || ""; img.loading = "lazy"; carta.append(img); }
-    if (d.texto) carta.append(el("p",null,d.texto));
+    if (d.texto) carta.append(el("p",null,rellenar(d.texto,n)));
     if (d.vale) {
-      const v = el("div","vale"); v.append(el("small",null,"Vale por"), el("strong",null,d.vale)); carta.append(v);
+      const v = el("div","vale"); v.append(el("small",null,"Vale por"), el("strong",null,rellenar(d.vale,n))); carta.append(v);
     }
     if (d.enlace && d.enlace.url) {
       const a = el("a","boton",d.enlace.texto || "Ábrelo"); a.href = d.enlace.url; a.target = "_blank"; a.rel = "noopener";
       carta.append(a);
     }
     if (C.firma) carta.append(el("div","firma",C.firma));
+    if (especial && !reduce) carta.append(el("div","barrido"));
     velo.classList.add("visible");
     carta.scrollTop = 0;
     x.focus({preventScroll:true});
+    if (origen && !reduce) vuelo(origen, especial);
+  }
+
+  /* La tarjeta sale volando desde la puerta */
+  function vuelo(origen, especial){
+    carta.style.transition = "none";
+    const a = origen.getBoundingClientRect(), b = carta.getBoundingClientRect();
+    const dx = (a.left + a.width/2) - (b.left + b.width/2);
+    const dy = (a.top + a.height/2) - (b.top + b.height/2);
+    const sc = Math.max(.12, a.width / b.width);
+    const anim = carta.animate([
+      {transform:`translate(${dx}px,${dy}px) scale(${sc}) rotate(-8deg)`, opacity:.2, offset:0},
+      {transform:"translate(0,-14px) scale(1.04) rotate(1.5deg)", opacity:1, offset:.7},
+      {transform:"none", opacity:1}
+    ], {duration: especial ? 720 : 480, easing:"cubic-bezier(.2,.8,.25,1)"});
+    anim.onfinish = () => { carta.style.transition = ""; };
+    // el contenido aparece en cascada
+    [...carta.children].filter(c => !c.classList.contains("cerrar") && !c.classList.contains("barrido"))
+      .forEach((c,i) => {
+        const pop = c.classList.contains("big-icono");
+        c.animate(pop
+          ? [{transform:"scale(0) rotate(-40deg)",opacity:0},{transform:"scale(1.45) rotate(10deg)",opacity:1,offset:.6},{transform:"none",opacity:1}]
+          : [{transform:"translateY(14px)",opacity:0},{transform:"none",opacity:1}],
+          {duration: pop ? 650 : 420, delay: 260 + i*90, easing:"cubic-bezier(.2,.9,.3,1.2)", fill:"backwards"});
+      });
+  }
+
+  /* Explosión de luz y chispas en la puerta */
+  function celebrar(btn, n){
+    const r = btn.getBoundingClientRect();
+    const cx = r.left + r.width/2, cy = r.top + r.height/2;
+    const capa = (cls) => { const d = document.createElement("div"); d.className = "fx " + cls;
+      d.style.left = cx + "px"; d.style.top = cy + "px"; document.body.appendChild(d); return d; };
+    const grande = n === 24 ? 1.5 : 1;
+
+    capa("fx-destello").animate([{transform:"scale(.2)",opacity:1},{transform:`scale(${1.6*grande})`,opacity:0}],
+      {duration:650,easing:"ease-out"}).onfinish = e => e.target.effect.target.remove();
+    capa("fx-rayos").animate([{transform:"scale(.2) rotate(0)",opacity:0},{transform:`scale(${1.1*grande}) rotate(40deg)`,opacity:1,offset:.35},
+      {transform:`scale(${1.7*grande}) rotate(90deg)`,opacity:0}],{duration:1300,easing:"ease-out"}).onfinish = e => e.target.effect.target.remove();
+    [0,140].forEach(d => capa("fx-anillo").animate([{transform:"scale(.2)",opacity:1},{transform:`scale(${2.8*grande})`,opacity:0}],
+      {duration:800,delay:d,easing:"cubic-bezier(.1,.7,.3,1)",fill:"backwards"}).onfinish = e => e.target.effect.target.remove());
+
+    const tipos = ["✨","❤️","⭐","✨","💛"];
+    const total = n === 24 ? 70 : 42;
+    for (let i=0;i<total;i++){
+      const p = document.createElement("span");
+      p.className = "fx-p";
+      const emoji = i % 3 === 0;
+      if (emoji) { p.textContent = tipos[i % tipos.length]; p.style.fontSize = (12 + Math.random()*12) + "px"; }
+      else {
+        const t = 4 + Math.random()*6;
+        Object.assign(p.style,{width:t+"px",height:(Math.random()<.5?t:t*.45)+"px",borderRadius:Math.random()<.5?"50%":"2px",
+          background:["#f3d27a","#e0bd6a","#fff4d6","#c0392b","#ffffff"][i%5],boxShadow:"0 0 6px rgba(255,220,140,.9)"});
+      }
+      p.style.left = cx + "px"; p.style.top = cy + "px";
+      document.body.appendChild(p);
+      const ang = Math.random()*Math.PI*2, v = (70 + Math.random()*150) * grande;
+      const tx = Math.cos(ang)*v, ty = Math.sin(ang)*v - 40;
+      const rot = (Math.random()-.5)*900;
+      p.animate([
+        {transform:"translate(-50%,-50%) scale(.3)",opacity:1},
+        {transform:`translate(calc(-50% + ${tx*.75}px),calc(-50% + ${ty*.75}px)) scale(1.15) rotate(${rot*.6}deg)`,opacity:1,offset:.45},
+        {transform:`translate(calc(-50% + ${tx}px),calc(-50% + ${ty+140}px)) scale(.7) rotate(${rot}deg)`,opacity:0}
+      ],{duration:1200+Math.random()*700,easing:"cubic-bezier(.15,.7,.4,1)"}).onfinish = () => p.remove();
+    }
+  }
+
+  /* Día 24: lluvia de corazones */
+  function lluviaCorazones(){
+    for (let i=0;i<46;i++){
+      const p = document.createElement("span");
+      p.className = "fx-p"; p.textContent = ["❤️","💛","✨","❤️"][i%4];
+      p.style.fontSize = (14 + Math.random()*16) + "px";
+      p.style.left = (Math.random()*innerWidth) + "px"; p.style.top = "-30px"; p.style.zIndex = 16;
+      document.body.appendChild(p);
+      const dur = 2600 + Math.random()*1800, sway = (Math.random()-.5)*120;
+      p.animate([
+        {transform:"translate(0,0) rotate(0)",opacity:0},
+        {opacity:1,offset:.1},
+        {transform:`translate(${sway}px,${innerHeight*.55}px) rotate(${(Math.random()-.5)*90}deg)`,opacity:1,offset:.6},
+        {transform:`translate(${-sway/2}px,${innerHeight+60}px) rotate(${(Math.random()-.5)*180}deg)`,opacity:0}
+      ],{duration:dur,delay:Math.random()*1400,easing:"linear",fill:"backwards"}).onfinish = () => p.remove();
+    }
   }
   function cerrar(){ velo.classList.remove("visible"); }
   velo.addEventListener("click", e => { if (e.target === velo) cerrar(); });
@@ -502,7 +623,6 @@
   /* ---------- Nieve ---------- */
   const cv = $("#nieve"), cx = cv.getContext("2d");
   let W,H,copos=[];
-  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   function tam(){
     const dpr = Math.min(devicePixelRatio||1,2);
     W = innerWidth; H = innerHeight; cv.width = W*dpr; cv.height = H*dpr;
