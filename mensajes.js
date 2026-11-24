@@ -4,7 +4,7 @@
    Cada día puede llevar (todo opcional menos "titulo"):
      titulo : texto corto que sale arriba
      texto  : el mensaje (puedes hacer saltos de línea con \n)
-     foto   : nombre de una foto que subas al repo, p. ej. "fotos/dia2.jpg"
+     foto   : nombre de una foto que subas al repo, p. ej. "dia2.jpg" (súbela junto a index.html)
      enlace : { texto: "Escúchala", url: "https://open.spotify.com/..." }
      vale   : texto de un cupón, p. ej. "Un desayuno en la cama"
      icono  : emoji que se ve detrás de la puerta al abrirla
@@ -42,7 +42,7 @@ const CALENDARIO = {
 
     2:  { icono: "🏔️", titulo: "Donde empezó todo",
           texto: "Bulnes, Picos de Europa.\nDe todos los sitios del mundo, nos fuimos a encontrar en un pueblo al que solo se llega andando o en funicular.\nYo digo que fue el destino. O las montañas, que tienen muy buen gusto.",
-          foto: "fotos/bulnes.jpg" },
+          foto: "bulnes.jpg" },
 
     3:  { icono: "🎬", titulo: "Vale por…",
           vale: "Una noche de peli elegida por ti, sin protestar ni una sola vez (ni aunque sea de las tuyas 🙄)" },
@@ -79,7 +79,7 @@ const CALENDARIO = {
 
     13: { icono: "📸", titulo: "¿Te acuerdas de esto?",
           texto: "Nieve, sol, montañas y tú.\nNo se me ocurre un plan mejor… bueno, sí: repetirlo contigo 🏔️",
-          foto: "fotos/dia13.jpg" },
+          foto: "dia13.jpg" },
 
     14: { icono: "⛰️", titulo: "Plan pendiente",
           texto: "Volver a los Picos de Europa juntos.\nEsta vez sabiendo lo que pasó la primera vez 😌\n¿Subimos a ver el Naranjo de Bulnes?" },
