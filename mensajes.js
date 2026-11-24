@@ -17,14 +17,14 @@
    ===================================================================== */
 
 const CALENDARIO = {
-  nombre: "Jurdana",             // su nombre, sale en la portada
-  firma: "Te quiero, tu chico",  // cómo firmas los mensajes
+  nombre: "Jur",             // su nombre, sale en la portada
+  firma: "Te quiero, tu chico🩷",  // cómo firmas los mensajes
   anio: 2026,                    // año del diciembre en que se abre
   fechaVernos: "2026-12-26",     // cuándo os volvéis a ver (año-mes-día)
 
   // 🔓 MODO PRUEBA: con true se pueden abrir TODAS las puertas ya mismo.
   // ⚠️ Cámbialo a false ANTES de mandarle el enlace a ella.
-  abrirTodo: true,
+  abrirTodo: false,
 
   // Estilo de las puertas: "clasico", "regalo", "sobre" o "bola"
   estilo: "clasico",
