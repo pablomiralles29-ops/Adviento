@@ -133,6 +133,100 @@
   }
   .puerta:focus-visible{outline:2px solid var(--oro);outline-offset:3px}
 
+
+  /* =================== ESTILOS DE PUERTA =================== */
+  .deco{display:none}
+  .puerta{--cinta:var(--oro);--c:var(--rojo)}
+  .puerta[data-tono="crema"]{--cinta:var(--rojo)}
+
+  /* ---- 🎁 REGALO: cajas con lazo ---- */
+  .estilo-regalo .hoja{
+    inset:18% 5% 2% 5%;border-radius:5px;transform-origin:50% 100%;
+    transition:transform .7s cubic-bezier(.5,-.4,.3,1),opacity .45s .25s;
+    background:
+      linear-gradient(180deg,transparent 0 20%,rgba(0,0,0,.22) 20% 23%,transparent 23%),
+      linear-gradient(90deg,transparent calc(50% - 6px),var(--cinta) calc(50% - 6px) calc(50% + 6px),transparent calc(50% + 6px)),
+      linear-gradient(0deg,transparent calc(56% - 6px),var(--cinta) calc(56% - 6px) calc(56% + 6px),transparent calc(56% + 6px)),
+      var(--c);
+  }
+  .estilo-regalo .hoja::before,.estilo-regalo .hoja::after{display:none}
+  .estilo-regalo .deco{display:block;position:absolute;left:50%;top:0;width:12px;height:12px;margin:-9px 0 0 -6px;
+    border-radius:50%;background:var(--cinta);z-index:2}
+  .estilo-regalo .deco::before,.estilo-regalo .deco::after{content:"";position:absolute;top:-6px;width:22px;height:14px;
+    border:5px solid var(--cinta);border-radius:50% 50% 50% 50%/60% 60% 40% 40%}
+  .estilo-regalo .deco::before{right:7px;transform:rotate(-22deg)}
+  .estilo-regalo .deco::after{left:7px;transform:rotate(22deg)}
+  .estilo-regalo .grande .deco{transform:scale(1.8)}
+  .estilo-regalo .num{margin-top:12%;width:2.1em;height:2.1em;border-radius:50%;display:grid;place-items:center;
+    background:#fff6e2;color:var(--rojo);font-size:clamp(1rem,4.6vw,1.4rem);box-shadow:0 2px 6px rgba(0,0,0,.35)}
+  .estilo-regalo .grande .num{font-size:clamp(2rem,9vw,3rem)}
+  .estilo-regalo .abierta .hoja{transform:translateY(-30%) rotate(-12deg) scale(.8);opacity:0}
+
+  /* ---- 💌 SOBRE: cartas con sello de lacre ---- */
+  .estilo-sobre .hoja{
+    inset:20% 3%;border-radius:5px;transform-origin:50% 50%;
+    transition:transform .6s .25s ease-in,opacity .4s .45s;
+  }
+  .estilo-sobre .hoja::before{inset:0;border:0;border-radius:5px;
+    background:
+      linear-gradient(to top right,rgba(0,0,0,.13) 49.5%,transparent 50%) left bottom/50.5% 70% no-repeat,
+      linear-gradient(to top left,rgba(0,0,0,.13) 49.5%,transparent 50%) right bottom/50.5% 70% no-repeat}
+  .estilo-sobre .hoja::after{display:none}
+  .estilo-sobre .deco{display:block;position:absolute;left:0;right:0;top:0;height:58%;z-index:1;
+    background:color-mix(in srgb,var(--c) 80%,#000);clip-path:polygon(0 0,100% 0,50% 100%);
+    border-radius:5px 5px 0 0;transform-origin:50% 0;transition:transform .45s ease-in-out;
+    filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
+  .estilo-sobre .num{position:relative;z-index:2;margin-top:10%;width:2em;height:2em;border-radius:50%;display:grid;place-items:center;
+    font-size:clamp(.95rem,4.2vw,1.3rem);color:#fff3da;
+    background:radial-gradient(circle at 35% 30%,#c0392b,#7a1520 70%);
+    box-shadow:0 2px 5px rgba(0,0,0,.45),inset 0 0 0 3px rgba(0,0,0,.15)}
+  .estilo-sobre .puerta[data-tono="rojo"] .num{background:radial-gradient(circle at 35% 30%,#f0d48a,#b58a2e 70%);color:#5a1a1f}
+  .estilo-sobre .grande .num{font-size:clamp(2rem,9vw,3rem)}
+  .estilo-sobre .abierta .deco{transform:rotateX(180deg)}
+  .estilo-sobre .abierta .num{opacity:0;transition:opacity .2s}
+  .estilo-sobre .abierta .hoja{transform:translateY(40%) scale(.85);opacity:0}
+
+  /* ---- 🔴 BOLAS de Navidad colgando ---- */
+  .estilo-bola .hoja{background:none;box-shadow:none;transform-origin:50% 0;
+    transition:transform .45s cubic-bezier(.3,1.6,.5,1),opacity .35s .15s}
+  .estilo-bola .hoja::before{inset:0 auto auto 50%;width:0;height:14%;border:0;border-left:1px solid rgba(224,189,106,.75);border-radius:0}
+  .estilo-bola .hoja::after{left:50%;right:auto;top:12%;width:16%;height:7%;margin:0;transform:translateX(-50%);
+    border-radius:3px 3px 1px 1px;background:linear-gradient(90deg,#9c7a32,#f1d68e,#9c7a32);z-index:1}
+  .estilo-bola .grande .hoja::after{width:10%}
+  .estilo-bola .deco{display:block;position:absolute;top:17%;left:50%;height:80%;aspect-ratio:1;transform:translateX(-50%);
+    border-radius:50%;
+    background:
+      radial-gradient(circle at 32% 28%,rgba(255,255,255,.6),rgba(255,255,255,0) 22%),
+      linear-gradient(180deg,transparent 0 76%,rgba(224,189,106,.8) 76% 79%,transparent 79%),
+      radial-gradient(circle at 45% 40%,color-mix(in srgb,var(--c) 85%,#fff),color-mix(in srgb,var(--c) 70%,#000) 85%);
+    box-shadow:0 8px 16px rgba(0,0,0,.45)}
+  .estilo-bola .num{position:relative;z-index:1;margin-top:28%}
+  .estilo-bola .grande .num{margin-top:22%}
+  .estilo-regalo .hueco,.estilo-sobre .hueco,
+  .estilo-bola .hueco{background:radial-gradient(circle at 50% 55%,rgba(224,189,106,.28),transparent 60%);box-shadow:none}
+  .estilo-bola .hueco .icono{margin-top:22%}
+  .estilo-bola .abierta .hoja{transform:scale(1.25);opacity:0}
+  .estilo-bola .hoy:not(.abierta) .hoja{animation:none}
+  .estilo-bola .hoy:not(.abierta) .deco{animation:brillo-bola 2.2s ease-in-out infinite}
+  @keyframes brillo-bola{50%{box-shadow:0 8px 16px rgba(0,0,0,.45),0 0 0 4px rgba(224,189,106,.55),0 0 26px 6px rgba(224,189,106,.45)}}
+  .estilo-bola .puerta[data-tono="crema"] .num{color:var(--rojo)}
+
+  /* ---- 🍫 CHURROS con chocolate (días sueltos) ---- */
+  .puerta.churro .hoja{background:none!important;box-shadow:none;transform-origin:50% 100%;
+    transition:transform .55s cubic-bezier(.5,-.3,.3,1),opacity .4s .2s}
+  .puerta.churro .hoja::before,.puerta.churro .hoja::after,.puerta.churro .deco{display:none}
+  .churro-svg{position:absolute;left:50%;top:50%;height:88%;width:auto;aspect-ratio:1;transform:translate(-50%,-50%);
+    filter:drop-shadow(0 5px 7px rgba(0,0,0,.45));overflow:visible}
+  .puerta.churro .num{position:absolute;left:50%;top:76%;transform:translate(-50%,-50%);margin:0;
+    width:auto;height:auto;background:none;box-shadow:none;border-radius:0;
+    font-size:clamp(.85rem,3.8vw,1.2rem);color:var(--rojo);text-shadow:none;z-index:1}
+  .puerta.churro.grande .num{font-size:clamp(1.8rem,8vw,2.6rem)}
+  .puerta.churro .hueco{background:radial-gradient(circle at 50% 55%,rgba(224,189,106,.28),transparent 60%);box-shadow:none}
+  .puerta.churro.abierta .hoja{transform:translateY(-25%) scale(.6) rotate(8deg);opacity:0}
+  .puerta.churro.hoy:not(.abierta) .hoja{animation:none}
+  .puerta.churro.hoy:not(.abierta) .churro-svg{animation:brillo-churro 2.2s ease-in-out infinite}
+  @keyframes brillo-churro{50%{filter:drop-shadow(0 0 10px rgba(240,200,110,.95)) drop-shadow(0 5px 7px rgba(0,0,0,.45))}}
+
   footer{text-align:center;margin-top:30px;font-family:"Fraunces",Georgia,serif;font-style:italic;opacity:.75}
 
   /* ---------- Modal ---------- */
@@ -184,7 +278,9 @@
     overflow:hidden;text-overflow:ellipsis
   }
   .aviso.visible{opacity:1;transform:translate(-50%,0)}
-  .modo-prueba{position:fixed;top:8px;left:8px;z-index:30;font-size:.7rem;background:#c0392b;color:#fff;padding:3px 8px;border-radius:6px}
+  .modo-prueba{position:fixed;top:8px;left:8px;z-index:30;font-size:.72rem;background:#c0392b;color:#fff;padding:4px 6px 4px 10px;
+    border-radius:8px;display:flex;gap:8px;align-items:center;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+  .modo-prueba button{border:0;border-radius:6px;background:#fff;color:#c0392b;font:inherit;font-weight:700;padding:4px 8px;cursor:pointer}
 
   @media (prefers-reduced-motion:reduce){
     .hoja,.carta,.hueco .icono{transition:none}
@@ -226,7 +322,7 @@
 
   /* ---------- Fecha de hoy en hora de España ---------- */
   const params = new URLSearchParams(location.search);
-  const prueba = params.has(C.clavePrueba || "probar");
+  const prueba = params.has(C.clavePrueba || "probar") || C.abrirTodo === true;
 
   function hoyMadrid(){
     if (prueba && params.get("hoy")) {            // solo para probar: ?probar&hoy=2026-12-05
@@ -249,6 +345,10 @@
   try { abiertas = JSON.parse(localStorage.getItem(CLAVE)) || []; } catch(e){}
   const guardar = () => { try { localStorage.setItem(CLAVE, JSON.stringify(abiertas)); } catch(e){} };
 
+  /* ---------- Estilo de las puertas ---------- */
+  const estilo = params.get("estilo") || C.estilo || "clasico";
+  document.body.classList.add("estilo-" + estilo);
+
   /* ---------- Cabecera ---------- */
   $("#nombre").textContent = C.nombre || "ti";
   $("#pie").textContent = C.firma || "";
@@ -265,9 +365,40 @@
   }
   if (prueba) {
     const b = document.createElement("div");
-    b.className = "modo-prueba"; b.textContent = "MODO PRUEBA";
+    b.className = "modo-prueba";
+    b.innerHTML = 'MODO PRUEBA · todas abiertas <button type="button">↺ Cerrar todas</button>';
+    b.querySelector("button").onclick = () => {
+      abiertas = []; guardar();
+      document.querySelectorAll(".puerta.abierta").forEach(p => p.classList.remove("abierta"));
+    };
     document.body.appendChild(b);
   }
+
+
+  /* ---------- Dibujo del churro con chocolate ---------- */
+  const unChurro = (x, giro) => `
+      <g transform="rotate(${giro} ${x+6} 58)">
+        <rect x="${x}" y="6" width="12" height="56" rx="6" fill="url(#gch)"/>
+        <path d="M${x+3.5} 11V58M${x+6} 9V60M${x+8.5} 11V58" stroke="#99561a" stroke-width="1.1" opacity=".55"/>
+        <g fill="#fff" opacity=".9">
+          <circle cx="${x+3}" cy="16" r=".9"/><circle cx="${x+8}" cy="22" r=".8"/><circle cx="${x+5}" cy="30" r=".9"/>
+          <circle cx="${x+9}" cy="37" r=".8"/><circle cx="${x+4}" cy="43" r=".8"/><circle cx="${x+7}" cy="12" r=".7"/>
+        </g>
+      </g>`;
+  const CHURRO_SVG = `
+    <svg class="churro-svg" viewBox="0 0 100 100" aria-hidden="true">
+      <defs><linearGradient id="gch" x1="0" x2="1">
+        <stop offset="0" stop-color="#b86a22"/><stop offset=".45" stop-color="#eeb066"/><stop offset="1" stop-color="#a95f1d"/>
+      </linearGradient></defs>
+      ${unChurro(30,-16)}${unChurro(52,14)}
+      <ellipse cx="50" cy="95" rx="40" ry="4.5" fill="#e9dcc3"/>
+      <path d="M78 63q15 1 11 14q-3 9-13 6" fill="none" stroke="#f7efe1" stroke-width="5" stroke-linecap="round"/>
+      <path d="M21 57H79L73 88Q72 93 66 93H34Q28 93 27 88Z" fill="#fbf5ea" stroke="#d8c6a8" stroke-width="1"/>
+      <path d="M23.5 66H76.5" stroke="#8f2633" stroke-width="2.2"/>
+      <ellipse cx="50" cy="57" rx="29" ry="6" fill="#4a2410"/>
+      <ellipse cx="44" cy="56" rx="10" ry="1.6" fill="#7a4224" opacity=".7"/>
+    </svg>`;
+  const diasChurro = Array.isArray(C.churros) ? C.churros : [];
 
   /* ---------- Construir las puertas ---------- */
   const orden = [7,18,3,12,24,1,15,9,21,5,14,10,2,19,8,23,4,13,17,11,22,6,16,20];
@@ -287,8 +418,12 @@
     if (n === diaActual) btn.classList.add("hoy");
     if (abiertas.includes(n) && disponible(n)) btn.classList.add("abierta");
     btn.setAttribute("aria-label", `Puerta del día ${n}`);
-    btn.innerHTML = `<span class="hueco"><span class="icono"></span></span><span class="hoja"><span class="num">${n}</span></span>`;
+    btn.innerHTML = `<span class="hueco"><span class="icono"></span></span><span class="hoja"><span class="deco"></span><span class="num">${n}</span></span>`;
     btn.querySelector(".icono").textContent = info.icono || "🎁";
+    if (diasChurro.includes(n)) {
+      btn.classList.add("churro");
+      btn.querySelector(".hoja").insertAdjacentHTML("afterbegin", CHURRO_SVG);
+    }
     btn.addEventListener("click", () => pulsar(btn, n));
     rejilla.appendChild(btn);
   });
@@ -391,4 +526,3 @@
 </script>
 </body>
 </html>
-
