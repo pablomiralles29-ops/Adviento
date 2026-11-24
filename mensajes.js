@@ -30,7 +30,7 @@ const CALENDARIO = {
   estilo: "clasico",
 
   // Días que salen como churros con chocolate 🍫 (pon [] para ninguno)
-  churros: [4, 11, 17, 22],
+  churros: [],
 
   // Otra forma de ver todas las puertas sin tocar lo de arriba:
   //   https://TU-USUARIO.github.io/adviento/?probar
@@ -42,7 +42,7 @@ const CALENDARIO = {
 
     2:  { icono: "🏔️", titulo: "Donde empezó todo",
           texto: "Bulnes, Picos de Europa.\nDe todos los sitios del mundo, nos fuimos a encontrar en un pueblo al que solo se llega andando o en funicular.\nYo digo que fue el destino. O las montañas, que tienen muy buen gusto.",
-          foto: "" },
+          foto: "fotos/bulnes.jpg" },
 
     3:  { icono: "🎬", titulo: "Vale por…",
           vale: "Una noche de peli elegida por ti, sin protestar ni una sola vez (ni aunque sea de las tuyas 🙄)" },
@@ -53,8 +53,10 @@ const CALENDARIO = {
     5:  { icono: "🍣", titulo: "Vale por…",
           vale: "Una cena de sushi a lo grande. Tú pides y yo no digo nada de cuántas piezas te comes 🍣" },
 
-    6:  { icono: "🏃‍♀️", titulo: "Reto del día",
-          texto: "Como a los dos nos encanta el deporte, hoy toca reto:\nhaz algo de ejercicio y mándame una prueba 📸.\nSi lo cumples, te debo lo que tú quieras (dentro de lo razonable 😅)." },
+    6:  { icono: "💆‍♀️", titulo: "La ruleta del masaje",
+          texto: "Gira la ruleta y descubre cuántos minutos de masaje relajante te debo.\nLo que salga, va a misa (aunque salga 60 😅).",
+          // valores: los números de la ruleta · unidad: lo que se dice después del número
+          ruleta: { valores: [10, 15, 20, 25, 30, 40, 45, 60], unidad: "minutos de masaje relajante" } },
 
     7:  { icono: "💌", titulo: "Una cosa que me encanta de ti",
           texto: "[Escribe aquí algo que te encante de ella: un gesto, una manía, cómo se ríe…]" },
@@ -76,8 +78,8 @@ const CALENDARIO = {
           vale: "Un maratón de pelis navideñas con manta y palomitas (aunque te quedes dormida en la segunda)" },
 
     13: { icono: "📸", titulo: "¿Te acuerdas de esto?",
-          texto: "[Pon una foto vuestra y cuéntale qué recuerdas de ese día]",
-          foto: "" },
+          texto: "Nieve, sol, montañas y tú.\nNo se me ocurre un plan mejor… bueno, sí: repetirlo contigo 🏔️",
+          foto: "fotos/dia13.jpg" },
 
     14: { icono: "⛰️", titulo: "Plan pendiente",
           texto: "Volver a los Picos de Europa juntos.\nEsta vez sabiendo lo que pasó la primera vez 😌\n¿Subimos a ver el Naranjo de Bulnes?" },

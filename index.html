@@ -239,11 +239,30 @@
   .fx-anillo{width:120px;height:120px;margin:-60px 0 0 -60px;border:3px solid rgba(255,222,150,.95);
     box-shadow:0 0 18px rgba(255,210,120,.8),inset 0 0 18px rgba(255,210,120,.6)}
   .fx-p{position:fixed;left:0;top:0;pointer-events:none;z-index:15;line-height:1;will-change:transform,opacity}
-  .carta > .barrido{position:absolute;inset:0;border-radius:16px;overflow:hidden;pointer-events:none;z-index:3}
+  .carta > .barrido{position:absolute;inset:0;border-radius:11px;overflow:hidden;pointer-events:none;z-index:3}
   .barrido::before{content:"";position:absolute;top:-10%;bottom:-10%;width:45%;left:-70%;
     background:linear-gradient(100deg,transparent,rgba(255,255,255,.85),rgba(255,236,180,.5),transparent);
     transform:skewX(-18deg);animation:barrido 1.2s .5s cubic-bezier(.3,.6,.3,1) forwards}
   @keyframes barrido{to{left:140%}}
+
+  /* =================== RULETA =================== */
+  .ruleta{margin:16px auto 2px;text-align:center}
+  .ruleta-caja{position:relative;width:min(250px,68vw);aspect-ratio:1;margin:0 auto}
+  .rueda{position:absolute;inset:0;border-radius:50%;transition:transform 4.8s cubic-bezier(.12,.72,.08,1);
+    filter:drop-shadow(0 8px 16px rgba(0,0,0,.28))}
+  .rueda svg{width:100%;height:100%;display:block}
+  .ruleta-flecha{position:absolute;left:50%;top:-10px;transform:translateX(-50%);z-index:2;width:0;height:0;
+    border-left:13px solid transparent;border-right:13px solid transparent;border-top:24px solid #c99a3a;
+    filter:drop-shadow(0 2px 2px rgba(0,0,0,.4))}
+  .ruleta-centro{position:absolute;left:50%;top:50%;width:20%;aspect-ratio:1;transform:translate(-50%,-50%);z-index:2;
+    border-radius:50%;display:grid;place-items:center;font-size:clamp(.9rem,4vw,1.2rem);
+    background:radial-gradient(circle at 35% 30%,#fff3cf,#d8ae55 60%,#9c7426);box-shadow:0 2px 8px rgba(0,0,0,.4)}
+  .boton-girar{margin-top:16px;border:0;border-radius:999px;padding:13px 26px;font:inherit;font-weight:700;font-size:1.05rem;
+    color:#fff;background:linear-gradient(180deg,#a83240,#7d1e2a);box-shadow:0 6px 16px rgba(143,38,51,.4);cursor:pointer}
+  .boton-girar:active{transform:scale(.97)}
+  .boton-girar:disabled{opacity:.55;cursor:default;box-shadow:none}
+  .ruleta-res:empty{display:none}
+  .ruleta-res{margin-top:16px}
 
   footer{text-align:center;margin-top:30px;font-family:"Fraunces",Georgia,serif;font-style:italic;opacity:.75}
 
@@ -263,7 +282,8 @@
     transform:translateY(24px) scale(.96);transition:transform .4s cubic-bezier(.2,1.2,.4,1);
   }
   .velo.visible .carta{transform:none}
-  .carta::before{content:"";position:absolute;inset:8px;border:1px solid rgba(143,38,51,.25);border-radius:11px;pointer-events:none}
+  .carta{border:1px solid rgba(143,38,51,.28);border-radius:11px;width:min(424px,calc(100% - 16px));max-height:calc(88vh - 16px);
+    box-shadow:0 0 0 8px #f8f0e0,0 0 0 9px rgba(143,38,51,.08),0 20px 60px rgba(0,0,0,.5)}
   .cerrar{
     position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;
     border:0;background:rgba(43,29,20,.07);color:var(--tinta);font-size:1.3rem;cursor:pointer;z-index:1
@@ -271,7 +291,8 @@
   .carta .dia{font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;color:var(--rojo);font-weight:700}
   .carta h2{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:1.65rem;line-height:1.15;margin:.35em 0 .55em}
   .carta .big-icono{font-size:2.4rem;line-height:1;margin-bottom:6px}
-  .carta img{display:block;width:100%;border-radius:10px;margin:4px 0 16px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+  .carta img{display:block;width:100%;max-height:46vh;object-fit:cover;object-position:center 60%;
+    border-radius:10px;margin:4px 0 16px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
   .carta p{font-size:1.04rem;line-height:1.6;white-space:pre-line;text-align:left}
   .carta .vale{
     margin:6px 0 4px;padding:18px 16px;border-radius:10px;
@@ -389,6 +410,7 @@
     b.innerHTML = 'MODO PRUEBA · todas abiertas <button type="button">↺ Cerrar todas</button>';
     b.querySelector("button").onclick = () => {
       abiertas = []; guardar();
+      try { Object.keys(localStorage).filter(k => k.startsWith("adviento-ruleta-")).forEach(k => localStorage.removeItem(k)); } catch(e){}
       document.querySelectorAll(".puerta.abierta").forEach(p => p.classList.remove("abierta"));
     };
     document.body.appendChild(b);
@@ -432,6 +454,73 @@
   }
   const vernosEn = n => vernosUTC == null ? "" : Math.round((vernosUTC - Date.UTC(ANIO,11,n)) / 864e5);
   const rellenar = (t, n) => String(t).replace(/\{vernos\}/g, vernosEn(n));
+
+
+  /* ---------- Ruleta ---------- */
+  function crearRuleta(cfg, n){
+    const vals = (cfg.valores && cfg.valores.length) ? cfg.valores : [10,15,20,25,30,40,45,60];
+    const unidad = cfg.unidad || "minutos de masaje relajante";
+    const seg = 360 / vals.length;
+    const clave = `adviento-ruleta-${ANIO}-${n}`;
+    const colores = ["#8f2633","#efe5d0","#1e4a3a","#efe5d0"];
+    const P = (a,r) => [(Math.sin(a*Math.PI/180)*r).toFixed(2), (-Math.cos(a*Math.PI/180)*r).toFixed(2)];
+    let svg = `<svg viewBox="-100 -100 200 200"><circle r="99" fill="#c99a3a"/>`;
+    vals.forEach((v,i) => {
+      const a0 = i*seg, a1 = (i+1)*seg, [x0,y0] = P(a0,92), [x1,y1] = P(a1,92);
+      const fondo = colores[i % colores.length], claro = fondo === "#efe5d0";
+      svg += `<path d="M0 0L${x0} ${y0}A92 92 0 ${seg>180?1:0} 1 ${x1} ${y1}Z" fill="${fondo}" stroke="#c99a3a" stroke-width="1.5"/>`;
+      svg += `<text transform="rotate(${a0+seg/2}) translate(0 -62)" text-anchor="middle" dominant-baseline="middle"
+                font-family="Fraunces,Georgia,serif" font-weight="700" font-size="${vals.length>10?15:20}"
+                fill="${claro ? "#8f2633" : "#f6e3b0"}">${v}</text>`;
+    });
+    for (let k=0;k<24;k++){ const [x,y] = P(k*15,95.5); svg += `<circle cx="${x}" cy="${y}" r="1.9" fill="${k%2?"#fff6dc":"#7a5a1c"}"/>`; }
+    svg += `</svg>`;
+
+    const caja = el("div","ruleta");
+    const marco = el("div","ruleta-caja");
+    const rueda = el("div","rueda"); rueda.innerHTML = svg;
+    marco.append(el("div","ruleta-flecha"), rueda, el("div","ruleta-centro","💆‍♀️"));
+    const boton = el("button","boton-girar","🎡 ¡Girar!"); boton.type = "button";
+    const res = el("div","ruleta-res");
+    caja.append(marco, boton, res);
+
+    const mostrarRes = (v) => {
+      res.innerHTML = "";
+      const vv = el("div","vale"); vv.append(el("small",null,"Te ha tocado"), el("strong",null,`${v} ${unidad}`));
+      res.append(vv);
+    };
+    let rot = 0, girando = false, guardado = null;
+    try { guardado = JSON.parse(localStorage.getItem(clave)); } catch(e){}
+    if (guardado && typeof guardado.i === "number" && vals[guardado.i] === guardado.v) {
+      rot = -(guardado.i*seg + seg/2);
+      rueda.style.transition = "none"; rueda.style.transform = `rotate(${rot}deg)`;
+      mostrarRes(guardado.v);
+      if (prueba) boton.textContent = "🎡 Girar otra vez";
+      else { boton.disabled = true; boton.textContent = "Ya has girado la ruleta 😌"; }
+    }
+    boton.onclick = () => {
+      if (girando) return;
+      girando = true; boton.disabled = true; res.innerHTML = "";
+      const i = Math.floor(Math.random()*vals.length);
+      const jitter = (Math.random()-.5) * seg * .6;
+      const deseado = (((-(i*seg + seg/2) + jitter) % 360) + 360) % 360;
+      const actual = ((rot % 360) + 360) % 360;
+      rot = rot + 360*6 + ((deseado - actual + 360) % 360);
+      rueda.style.transition = reduce ? "transform .6s ease-out" : "";
+      requestAnimationFrame(() => { rueda.style.transform = `rotate(${rot}deg)`; });
+      setTimeout(() => {
+        girando = false;
+        try { localStorage.setItem(clave, JSON.stringify({i, v: vals[i]})); } catch(e){}
+        mostrarRes(vals[i]);
+        try { navigator.vibrate && navigator.vibrate([30,60,30,60,80]); } catch(e){}
+        if (!reduce) celebrar(marco, n);
+        if (prueba) { boton.disabled = false; boton.textContent = "🎡 Girar otra vez"; }
+        else boton.textContent = "¡Hecho! Ya no hay vuelta atrás 😌";
+        res.scrollIntoView({behavior:"smooth", block:"nearest"});
+      }, reduce ? 700 : 4900);
+    };
+    return caja;
+  }
 
   /* ---------- Construir las puertas ---------- */
   const orden = [7,18,3,12,24,1,15,9,21,5,14,10,2,19,8,23,4,13,17,11,22,6,16,20];
@@ -502,6 +591,7 @@
     const h = el("h2",null,d.titulo || ""); h.id = "carta-titulo"; carta.append(h);
     if (d.foto) { const img = el("img"); img.src = d.foto; img.alt = d.titulo || ""; img.loading = "lazy"; carta.append(img); }
     if (d.texto) carta.append(el("p",null,rellenar(d.texto,n)));
+    if (d.ruleta) carta.append(crearRuleta(d.ruleta, n));
     if (d.vale) {
       const v = el("div","vale"); v.append(el("small",null,"Vale por"), el("strong",null,rellenar(d.vale,n))); carta.append(v);
     }
