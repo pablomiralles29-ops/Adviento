@@ -38,7 +38,7 @@ const CALENDARIO = {
 
   dias: {
     1:  { icono: "🎄", titulo: "Empieza la cuenta atrás",
-          texto: "Hola, Jurdana ❤️\nLo he hecho para que, aunque estemos a 800 km, cada día de diciembre tengas un trocito de mí.\n24 puertas, una por día. No vale hacer trampas (sé que lo vas a intentar 😏)." },
+          texto: "Hola, mi churrita ❤️\nLo he hecho para que, aunque estemos a 800 km, cada día de diciembre tengas un trocito de mí.\n24 puertas, una por día. No vale hacer trampas (sé que lo vas a intentar pillina😏)." },
 
     2:  { icono: "🏔️", titulo: "Donde empezó todo",
           texto: "Bulnes, Picos de Europa.\nDe todos los sitios del mundo, nos fuimos a encontrar en un pueblo al que solo se llega andando o en funicular.\nYo digo que fue el destino. O las montañas, que tienen muy buen gusto.",
