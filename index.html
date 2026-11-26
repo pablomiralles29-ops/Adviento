@@ -17,7 +17,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,600&family=DM+Sans:wght@400;500;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,600&family=DM+Sans:wght@400;500;700&family=Caveat:wght@500;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 
 <style>
   :root{
@@ -427,6 +427,8 @@
 
   /* =================== VALES CON DISEÑO PROPIO =================== */
   .carta .vale{text-align:center}
+  .vale .v-nota{font-family:"Caveat",cursive;font-size:1.12rem;line-height:1.15;margin:10px 14px 0;opacity:.9;transform:rotate(-1.5deg)}
+  .vale-churreria .v-nota{color:#2f6fb0}
   .vale .v-cab{font-size:.62rem;letter-spacing:.18em;font-weight:700;opacity:.85;margin-bottom:6px}
   .vale .v-meta{font-size:.68rem;letter-spacing:.06em;opacity:.8;margin-top:8px;line-height:1.35}
   .vale-cine{display:flex;padding:0!important;text-align:left;background:#1d1a2e!important;color:#f6e3b0!important;
@@ -618,6 +620,264 @@
     .hoja,.carta,.hueco .icono{transition:none}
     .hoy:not(.abierta) .hoja{animation:none}
   }
+
+  /* ===================== NUEVO (repaso 26 nov) ===================== */
+  body.sin-scroll{overflow:hidden}
+  :root{--ruido:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .38 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    --oro-met:linear-gradient(180deg,#fff1bf 0%,#e6c16a 38%,#b8872c 62%,#f3d88b 100%)}
+
+  /* 🔒 candado */
+  .candado{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;text-align:center;color:#fff6e2;
+    background:radial-gradient(120% 70% at 50% 0%,#22365a,#0e1828 70%)}
+  .candado div{max-width:320px}
+  .candado b{display:block;font-size:3rem;margin-bottom:10px}
+  .candado h1{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:1.5rem;margin-bottom:8px}
+  .candado p{opacity:.8;line-height:1.5}
+
+  /* Día 2: mapa → Bulnes */
+  .bulnes-caja{position:relative;aspect-ratio:312/262;margin:4px 0 12px;border-radius:10px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.18);background:#cfe2f1}
+  .b-mapa{position:absolute;inset:0;width:100%;height:100%}
+  .b-mar{fill:#cfe2f1}
+  .b-tierra{fill:#f3ead6;stroke:#c9b38a;stroke-width:.8}
+  .b-ruta{fill:none;stroke:#8f2633;stroke-width:2.4;stroke-dasharray:.1 5.5;stroke-linecap:round}
+  .b-mk{fill:none;stroke:#fff;stroke-width:9;stroke-linecap:round}
+  .b-pto{fill:#8f2633;stroke:#fff;stroke-width:1.2}
+  .b-txt{font:700 9.5px "DM Sans",sans-serif;fill:#2b1d14;paint-order:stroke;stroke:#f3ead6;stroke-width:2.5px}
+  .b-bul{font-size:6px}
+  .b-cor{fill:#e0314b;stroke:#fff;stroke-width:.8;transform-box:fill-box;transform-origin:50% 100%;opacity:0}
+  .b-onda{fill:none;stroke:#e0314b;stroke-width:1.2;opacity:0;transform-box:fill-box;transform-origin:center}
+  .carta .bulnes-caja .b-foto{position:absolute;inset:0;width:100%;height:100%;max-height:none;margin:0;border-radius:0;box-shadow:none;
+    object-fit:cover;object-position:center 60%;opacity:0}
+  .b-label{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);width:max-content;max-width:90%;text-align:center;line-height:1.1;opacity:0;pointer-events:none;
+    font-family:"Caveat",cursive;font-size:1.35rem;font-weight:700;color:#8f2633;background:rgba(255,250,240,.92);padding:3px 12px;border-radius:999px;
+    box-shadow:0 3px 10px rgba(0,0,0,.2)}
+  .b-cont{position:absolute;right:10px;top:10px;pointer-events:none;font-size:.8rem;font-weight:700;color:#2a3f66;
+    background:rgba(255,255,255,.85);padding:4px 9px;border-radius:999px;font-variant-numeric:tabular-nums}
+  .b-linea{opacity:0;transition:opacity 1s ease, filter 1s ease;filter:blur(2px)}
+  .b-linea.on{opacity:1;filter:none}
+  .b-pie{text-align:center;margin:-4px 0 10px}
+  .b-repetir{border:0;background:none;color:#2f6fb0;font:600 .85rem "DM Sans",sans-serif;cursor:pointer;padding:6px}
+
+  /* Vale desayuno (room service) */
+  .carta .vale.vale-desayuno{background:#fffaf0;color:var(--tinta);outline:none;border:1px solid #c9a96e;text-align:left;
+    box-shadow:0 0 0 4px #fffaf0,0 0 0 5px rgba(143,38,51,.5),0 8px 18px rgba(0,0,0,.15);padding:18px 18px 14px}
+  .vale-desayuno .v-cab{text-align:center;color:var(--rojo);opacity:1}
+  .vale-desayuno strong{display:block;text-align:center;font-style:italic;font-size:1.2rem!important;margin:2px 0 10px}
+  .vale-desayuno ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+  .vale-desayuno li{display:flex;align-items:baseline;gap:6px;font-size:.93rem}
+  .vale-desayuno li .pts{flex:1;border-bottom:2px dotted rgba(43,29,20,.35);transform:translateY(-3px);min-width:12px}
+  .vale-desayuno li b{font-family:"Caveat",cursive;font-size:1.15rem;color:var(--rojo);white-space:nowrap}
+  .vale-desayuno li span:first-child{flex:0 1 auto}
+  .vale-desayuno .v-meta{text-align:center;font-style:italic;margin-top:12px}
+  .ticket.t-desayuno{background:#b0703a}
+  .ticket.t-x2{box-shadow:0 0 0 3px #e0bd6a}
+  .ticket.t-x2 .ticket-txt::before{content:"×2 · DUPLICADO ✨";display:block;font-size:.68rem;letter-spacing:.14em;color:#ffe39a;margin-bottom:3px}
+  .ticket.t-pierde{background:#3a1d22}
+  .ticket.t-pierde .ticket-txt::before{content:"😈 VALE PARA TU CHICO";display:block;font-size:.68rem;letter-spacing:.14em;color:#ff9aa8;margin-bottom:3px}
+  .ticket.t-x2 .ticket-txt,.ticket.t-pierde .ticket-txt{flex-direction:column;align-items:flex-start;justify-content:center}
+  .ticket.elegido{box-shadow:0 0 0 3px #e0bd6a,0 6px 14px rgba(0,0,0,.3);transform:scale(1.02)}
+
+  /* Día 7: carta antigua */
+  .carta.carta-antigua{color:#3a2410;border:1px solid #6b3f17;
+    background:
+      radial-gradient(circle at 12% 18%,rgba(140,85,30,.2) 0 5%,transparent 13%),
+      radial-gradient(circle at 88% 64%,rgba(140,85,30,.16) 0 7%,transparent 16%),
+      radial-gradient(circle at 30% 92%,rgba(70,35,10,.18) 0 2%,transparent 5%),
+      radial-gradient(ellipse at 50% 50%,transparent 58%,rgba(105,55,15,.42) 100%),
+      var(--ruido),linear-gradient(160deg,#f2e3bf,#e3cb98);
+    box-shadow:inset 0 0 28px rgba(90,45,10,.5),inset 0 0 4px rgba(60,25,5,.6),0 0 0 7px #4a2a12,0 0 0 8px #2b170a,0 20px 60px rgba(0,0,0,.6)}
+  .carta-antigua h2,.carta-antigua .dia{font-family:"IM Fell English",Georgia,serif;font-weight:400;letter-spacing:.04em}
+  .carta-antigua .dia{color:#8f1d1d;text-transform:none;font-size:.95rem;font-style:italic}
+  .carta-antigua .cerrar{background:rgba(70,35,10,.12);color:#3a2410}
+  .perg{font-family:"IM Fell English",Georgia,serif;font-size:1.1rem;line-height:1.55;text-align:left;margin-top:6px}
+  .carta .perg p{white-space:normal;text-align:justify;margin:0 0 .85em;font-size:inherit;line-height:inherit;hyphens:auto}
+  .carta .perg p.perg-saludo{font-style:italic;font-size:1.2em;text-align:left}
+  .carta .perg p.perg-firma{text-align:right;font-style:italic;margin-top:1.1em}
+  .perg .tinta{opacity:0;color:#5a3a1c;transition:opacity .5s ease,color 1.6s ease}
+  .perg .tinta.on{opacity:1;color:#2e1a0a}
+  .perg .capitular{float:left;font-size:3.4em;line-height:.82;padding:.05em .08em 0 0;color:#8f1d1d!important}
+  .lacre{width:62px;height:62px;margin:2px 4px 0 auto;border-radius:47% 53% 50% 48%;display:grid;place-items:center;opacity:0;
+    background:radial-gradient(circle at 36% 30%,#d64a45,#9b1a1a 55%,#5e0b0b);box-shadow:0 4px 8px rgba(0,0,0,.35),inset 0 0 0 6px rgba(0,0,0,.14),inset 0 0 0 8px rgba(255,255,255,.06)}
+  .lacre span{font-family:"IM Fell English",Georgia,serif;font-size:1.7rem;color:#f2b2a4;text-shadow:0 -1px 0 rgba(0,0,0,.45)}
+  .lacre.on{animation:lacre .55s cubic-bezier(.3,1.5,.5,1) forwards}
+  @keyframes lacre{0%{opacity:0;transform:scale(1.8) rotate(-25deg)}100%{opacity:1;transform:rotate(-8deg)}}
+
+  /* Día 8: tocadiscos */
+  .td-caja{margin:6px 0 8px}
+  .td{position:relative;width:100%;max-width:340px;margin:0 auto;aspect-ratio:1/.86;border-radius:14px;
+    background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,0) 18%),repeating-linear-gradient(92deg,rgba(0,0,0,.06) 0 2px,transparent 2px 7px),
+      linear-gradient(135deg,#9a5b2e,#6e3b1b 55%,#5a2f15);
+    box-shadow:0 14px 26px rgba(0,0,0,.35),inset 0 0 0 2px rgba(255,255,255,.08),inset 0 -6px 12px rgba(0,0,0,.25)}
+  .td-tapa{position:absolute;inset:10px;border-radius:9px;background:linear-gradient(160deg,#2a2422,#171312);box-shadow:inset 0 2px 8px rgba(0,0,0,.6)}
+  .td-plato{position:absolute;left:7%;top:8%;width:68%;aspect-ratio:1;border-radius:50%;
+    background:radial-gradient(circle,#3b3b3b 0 63%,#222 64%,#555 66%,#2a2a2a 69%);box-shadow:0 6px 14px rgba(0,0,0,.6),inset 0 0 0 2px #111}
+  .td-vinilo{position:absolute;inset:4%;border-radius:50%;background:repeating-radial-gradient(circle,#111 0 1.4px,#1c1c1c 1.4px 2.8px),#111;box-shadow:inset 0 0 0 3px #0a0a0a}
+  .td-brillo{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 20deg,transparent 0deg,rgba(255,255,255,.18) 25deg,transparent 55deg,transparent 200deg,rgba(255,255,255,.12) 225deg,transparent 255deg)}
+  .td-etiqueta{position:absolute;inset:31%;border-radius:50%;background:radial-gradient(circle,#2a2a2a 0 6%,#f6c1cf 7%,#f2a9bc 100%);
+    display:grid;place-items:center;text-align:center;color:#5a1a2a;box-shadow:0 0 0 2px rgba(0,0,0,.25)}
+  .td-etiqueta b{display:block;font-family:"Caveat",cursive;font-size:clamp(.8rem,3.4vw,1rem);line-height:.9;margin-top:-10%;white-space:nowrap}
+  .td-etiqueta small{display:block;font-size:.42rem;letter-spacing:.14em;font-weight:700;margin-top:2px}
+  .td-etiqueta i{display:block;font-style:normal;font-size:.4rem;letter-spacing:.1em;opacity:.8;margin-top:22%}
+  .td.sonando .td-vinilo{animation:tdgira 1.8s linear infinite}
+  @keyframes tdgira{to{transform:rotate(360deg)}}
+  .td-brazo{position:absolute;right:5%;top:5%;width:26%;height:64%;transform-origin:72% 12%;transition:transform 1s cubic-bezier(.4,.1,.2,1);
+    pointer-events:none;filter:drop-shadow(2px 5px 4px rgba(0,0,0,.5))}
+  .td.sonando .td-brazo{transform:rotate(30deg)}
+  .td-brazo svg{width:100%;height:100%;overflow:visible}
+  .td-led{position:absolute;left:7%;bottom:6%;width:8px;height:8px;border-radius:50%;background:#4a1717;box-shadow:inset 0 0 2px #000}
+  .td.sonando .td-led{background:#ff4d5e;box-shadow:0 0 8px 2px rgba(255,77,94,.8)}
+  .td-rpm{position:absolute;left:12%;bottom:4.5%;font-size:.55rem;letter-spacing:.15em;color:#c9b8a6;font-weight:700}
+  .td-play{position:absolute;right:7%;bottom:6%;width:52px;height:52px;border-radius:50%;border:0;cursor:pointer;
+    background:radial-gradient(circle at 35% 30%,#fff3cf,#e0bd6a 55%,#9c7426);color:#3b2410;font-size:1.25rem;
+    box-shadow:0 4px 10px rgba(0,0,0,.5),inset 0 -3px 6px rgba(0,0,0,.25);display:grid;place-items:center}
+  .td-play:disabled{filter:grayscale(1);opacity:.6}
+  .td-marca{position:absolute;left:50%;transform:translateX(-50%);bottom:5%;font-family:"Fraunces",Georgia,serif;font-style:italic;font-size:.7rem;color:#e7d3b8;opacity:.8}
+  .td-prog{max-width:340px;margin:14px auto 0}
+  .td-barra{height:6px;border-radius:999px;background:rgba(43,29,20,.12);overflow:hidden;cursor:pointer}
+  .td-relleno{height:100%;width:0;background:linear-gradient(90deg,var(--rojo),#e0607a);border-radius:999px}
+  .td-tiempos{display:flex;justify-content:space-between;font-size:.75rem;color:#7a6650;margin-top:6px;font-variant-numeric:tabular-nums}
+  .td-ondas{display:flex;gap:3px;justify-content:center;align-items:flex-end;height:18px;margin-top:10px;opacity:0;transition:opacity .4s}
+  .td.sonando + .td-prog .td-ondas{opacity:1}
+  .td-ondas span{width:3px;border-radius:2px;background:var(--rojo);animation:tdonda 1s ease-in-out infinite}
+  .td-ondas span:nth-child(2){animation-delay:-.2s}.td-ondas span:nth-child(3){animation-delay:-.4s}.td-ondas span:nth-child(4){animation-delay:-.6s}.td-ondas span:nth-child(5){animation-delay:-.8s}
+  @keyframes tdonda{0%,100%{height:4px}50%{height:18px}}
+  .carta .td-falta{text-align:center;font-size:.92rem;margin-top:10px;color:#7a6650}
+
+  /* Día 9: libro pequeño en la tarjeta */
+  .libro-mini{display:flex;flex-direction:column;align-items:center;gap:12px;margin:6px 0 4px}
+  .lm-tapa{width:150px;height:206px;border:0;border-radius:3px 7px 7px 3px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+    background-color:#5b2d1a;background-image:linear-gradient(90deg,rgba(0,0,0,.5) 0,rgba(0,0,0,.12) 6%,rgba(255,255,255,.06) 8%,transparent 12%),
+      radial-gradient(ellipse at 30% 18%,rgba(255,220,180,.16),transparent 55%),var(--ruido);
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.4),inset 0 0 24px rgba(0,0,0,.45),6px 8px 0 -2px #e9dbbb,6px 8px 0 -1px #b99a6f,0 14px 24px rgba(0,0,0,.35);
+    animation:lmflota 3s ease-in-out infinite}
+  @keyframes lmflota{50%{transform:translateY(-4px) rotate(-1deg)}}
+  .lm-tapa span{background:var(--oro-met);-webkit-background-clip:text;background-clip:text;color:transparent;margin-left:10px}
+  .lm-tit{font-family:"IM Fell English","Fraunces",serif;font-size:1.75rem}
+  .lm-orn{font-size:.8rem;letter-spacing:.25em}
+  .lm-sub{font-family:"IM Fell English",serif;font-size:.6rem;letter-spacing:.2em}
+  .lm-btn{background:var(--oro-met)!important;color:#3a210f!important;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+  .carta .lm-pista{text-align:center;font-size:.85rem;opacity:.75}
+
+  /* Día 9: el libro a pantalla completa */
+  .lb-overlay{position:fixed;inset:0;z-index:40;overflow:auto;display:flex;flex-direction:column;align-items:center;gap:14px;
+    padding:calc(14px + env(safe-area-inset-top)) 12px 24px;color:#f5e9d8;
+    background:radial-gradient(ellipse at 50% 30%,#3b2a24 0%,#1d1412 70%)}
+  .lb-x{position:fixed;top:calc(10px + env(safe-area-inset-top));right:10px;background:rgba(255,255,255,.1)!important;color:#f5e9d8!important;z-index:2}
+  .lb-cab{text-align:center}
+  .lb-cab small{letter-spacing:.25em;font-size:.68rem;opacity:.6}
+  .lb-cab h3{font-family:"IM Fell English","Fraunces",serif;font-weight:400;font-size:1.5rem;margin-top:2px}
+  .lb-escena{perspective:1600px;margin-top:6px}
+  .lb-libro{--w:min(74vw,300px,calc((100vh - 360px)/1.38));--h:calc(var(--w)*1.38);position:relative;width:var(--w);height:var(--h);transform-style:preserve-3d}
+  .lb-libro::after{content:"";position:absolute;top:5px;bottom:5px;right:-7px;width:8px;border-radius:0 3px 3px 0;
+    background:repeating-linear-gradient(90deg,#e9dbbb 0 1px,#c9b38a 1px 2px);box-shadow:2px 0 4px rgba(0,0,0,.4)}
+  .lb-contra{position:absolute;inset:-6px -12px -8px -4px;border-radius:4px 8px 8px 4px;background:#4a2416 var(--ruido);
+    box-shadow:0 25px 50px rgba(0,0,0,.6),0 6px 12px rgba(0,0,0,.5)}
+  .lb-hoja{position:absolute;inset:0;transform-origin:left center;transform-style:preserve-3d;will-change:transform}
+  .lb-cara{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;border-radius:2px 5px 5px 2px}
+  .lb-dorso{transform:rotateY(180deg)}
+  .lb-sombra{position:absolute;inset:0;pointer-events:none;opacity:0;background:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.08) 55%,rgba(60,30,10,.45) 100%)}
+  .lb-papel{background-color:#efe1bf;background-image:radial-gradient(circle at 82% 14%,rgba(150,95,35,.16) 0 7%,transparent 18%),
+    radial-gradient(circle at 12% 88%,rgba(130,80,30,.14) 0 6%,transparent 20%),radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(120,72,25,.32) 100%),
+    linear-gradient(90deg,rgba(80,45,15,.35) 0,rgba(80,45,15,0) 9%),var(--ruido)}
+  .lb-dorso.lb-papel{background-image:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(120,72,25,.32) 100%),linear-gradient(270deg,rgba(80,45,15,.35) 0,rgba(80,45,15,0) 9%),var(--ruido)}
+  .lb-cuero{inset:-6px -12px -8px -4px!important;background-color:#5b2d1a;background-image:
+      linear-gradient(90deg,rgba(0,0,0,.55) 0,rgba(0,0,0,.15) 5%,rgba(255,255,255,.06) 6.5%,rgba(0,0,0,.25) 8%,transparent 11%),
+      radial-gradient(ellipse at 30% 18%,rgba(255,220,180,.16),transparent 55%),radial-gradient(ellipse at 85% 95%,rgba(0,0,0,.5),transparent 60%),var(--ruido);
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.4),inset 0 0 40px rgba(0,0,0,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .lb-marco{position:absolute;inset:22px 22px 22px 40px;border:2px solid #c9a14a;border-radius:6px;box-shadow:inset 0 0 0 4px #5b2d1a,inset 0 0 0 5px rgba(201,161,74,.8);opacity:.85}
+  .lb-esq{position:absolute;width:34px;height:34px;background:var(--oro-met);filter:drop-shadow(0 2px 2px rgba(0,0,0,.6))}
+  .lb-esq.a{top:0;right:0;clip-path:polygon(0 0,100% 0,100% 100%)}
+  .lb-esq.b{bottom:0;right:0;clip-path:polygon(100% 0,100% 100%,0 100%)}
+  .lb-oro{background:var(--oro-met);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 1px 0 rgba(0,0,0,.7))}
+  .lb-cuero h2{font-family:"IM Fell English","Cardo",serif;font-weight:400;font-size:calc(var(--w)*.15);margin-left:18px}
+  .lb-cuero .lb-orn{font-size:1.2rem;margin:6px 0 6px 18px;letter-spacing:.3em}
+  .lb-cuero p{font-family:"IM Fell English",serif;font-size:.9rem;letter-spacing:.18em;margin-left:18px}
+  .lb-guardas{background:#7b3b2a;background-image:radial-gradient(circle at 20% 30%,rgba(255,210,150,.25) 0 10%,transparent 11%),
+    radial-gradient(circle at 70% 60%,rgba(40,20,60,.35) 0 14%,transparent 15%),radial-gradient(circle at 40% 85%,rgba(255,210,150,.2) 0 9%,transparent 10%),var(--ruido);
+    background-size:90px 90px,120px 120px,80px 80px,auto}
+  .lb-pag{position:relative;height:100%;display:flex;flex-direction:column;align-items:center;padding:24px 20px 16px 28px;color:#3b2414}
+  .lb-foto{position:relative;margin-top:4px;padding:8px;background:#fbf6ea;box-shadow:0 3px 8px rgba(60,35,10,.35)}
+  .lb-foto img{display:block;max-width:calc(var(--w) - 74px);max-height:calc(var(--h)*.62);filter:sepia(.12) contrast(1.02);background:#e8dcc0;min-width:60px;min-height:60px}
+  .lb-foto .ec{position:absolute;width:20px;height:20px;background:#2d1d14;opacity:.92}
+  .lb-foto .ec.tl{top:-4px;left:-4px;clip-path:polygon(0 0,100% 0,0 100%)}
+  .lb-foto .ec.tr{top:-4px;right:-4px;clip-path:polygon(0 0,100% 0,100% 100%)}
+  .lb-foto .ec.bl{bottom:-4px;left:-4px;clip-path:polygon(0 0,100% 100%,0 100%)}
+  .lb-foto .ec.br{bottom:-4px;right:-4px;clip-path:polygon(100% 0,100% 100%,0 100%)}
+  .lb-pie{font-family:"Caveat",cursive;font-weight:700;font-size:1.55rem;margin-top:auto;text-align:center;line-height:1.05}
+  .lb-num{font-family:"IM Fell English",serif;font-size:.72rem;color:#8a6a45;margin-top:5px;letter-spacing:.2em}
+  .lb-peg{position:absolute;font-size:1.3rem;opacity:.85;filter:sepia(.4)}
+  .lb-portadilla{justify-content:center;text-align:center}
+  .lb-portadilla h4{font-family:"IM Fell English",serif;font-weight:400;font-size:2.3rem}
+  .lb-portadilla .lb-sub{font-family:"Caveat",cursive;font-size:1.5rem;margin:6px 0 16px}
+  .lb-bso{font-family:"IM Fell English",serif;font-size:.62rem;letter-spacing:.1em;color:#6b4a2b;border-top:1px solid #b99a6f;border-bottom:1px solid #b99a6f;padding:8px 4px;white-space:nowrap}
+  .lb-final{justify-content:center;text-align:center;gap:14px}
+  .lb-t{font-family:"Caveat",cursive;font-size:1.55rem;line-height:1.15;white-space:pre-line}
+  .lb-cont{font-family:"IM Fell English",serif;font-style:italic;color:#7a5634}
+  .lb-spoti{font:600 .8rem "DM Sans",sans-serif;background:#1d1412;color:#f5e9d8!important;text-decoration:none;padding:9px 16px;border-radius:99px}
+  .lb-firma{font-family:"Caveat",cursive;font-size:1.4rem;color:#9b3b2e}
+  .lb-yt-caja{width:min(92vw,340px);text-align:center}
+  .lb-yt{width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#000;box-shadow:0 8px 20px rgba(0,0,0,.5),0 0 0 1px rgba(224,189,106,.3)}
+  .lb-yt iframe{width:100%;height:100%;display:block}
+  .lb-aviso{margin-top:8px;font-size:.85rem;color:#f3d27a;animation:latidoAviso 1.4s ease-in-out infinite}
+  @keyframes latidoAviso{50%{opacity:.55}}
+  .lb-ctrl{display:flex;gap:14px;align-items:center}
+  .lb-ctrl button{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);color:#f5e9d8;font-size:15px;cursor:pointer}
+  .lb-cnt{font-family:"IM Fell English",serif;font-size:.9rem;min-width:66px;text-align:center;opacity:.8}
+
+  /* Día 23: doble o nada */
+  .doble{margin:16px 0 6px;padding:16px 14px;border-radius:14px;background:linear-gradient(160deg,#1d1a2e,#2a1d3a);color:#f6e3b0;text-align:center}
+  .doble-tit{font-family:"Fraunces",Georgia,serif;font-weight:700;font-size:1.3rem}
+  .carta .doble-exp{text-align:center;font-size:.9rem;opacity:.85;margin:6px 0 10px;color:#f6e3b0}
+  .doble-lista .ticket{width:100%;text-align:left;border:0;font:inherit;cursor:pointer;transition:transform .15s,box-shadow .15s}
+  .carta .doble-conf{text-align:center;font-size:.9rem;margin:12px 0 4px;font-style:italic}
+  .doble-planto{margin-top:10px}
+  .carta .doble-res{text-align:center;font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:1.1rem;margin:8px 0 12px}
+  .moneda-esc{perspective:600px;height:170px;display:grid;place-items:end center}
+  .moneda{position:relative;width:96px;height:96px;transform-style:preserve-3d}
+  .mo-cara{position:absolute;inset:0;border-radius:50%;display:grid;place-items:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;font-weight:800}
+  .mo-x2{background:radial-gradient(circle at 35% 30%,#fff3cf,#e0bd6a 55%,#9c7426);color:#5a3a10;font-family:"Fraunces",Georgia,serif;font-size:2.2rem;
+    box-shadow:inset 0 0 0 5px rgba(120,80,20,.4)}
+  .mo-diablo{background:radial-gradient(circle at 35% 30%,#e86a6a,#8f2633 60%,#4a0f18);font-size:2.6rem;transform:rotateY(180deg);box-shadow:inset 0 0 0 5px rgba(0,0,0,.25)}
+  .doble-vale{position:relative;margin:4px auto 10px;max-width:320px;padding:16px 14px;border-radius:10px;border:2px dashed rgba(255,244,220,.55);color:#fff4dc}
+  .doble-vale small{display:block;font-size:.65rem;letter-spacing:.22em;opacity:.85;margin-bottom:6px}
+  .doble-vale strong{font-family:"Fraunces",Georgia,serif;font-size:1.1rem;line-height:1.3}
+  .dv-x2{background:linear-gradient(160deg,#8f6a1c,#c9a14a)}
+  .dv-pierde{background:#3a1d22}
+  .dv-sello{position:absolute;right:-6px;top:-12px;transform:rotate(10deg);font-size:.72rem;font-weight:800;letter-spacing:.1em;padding:4px 8px;border-radius:6px;
+    border:2px solid currentColor;background:#fffaf0}
+  .dv-x2 .dv-sello{color:#9c7426}.dv-pierde .dv-sello{color:#c0392b}
+
+  /* Cartas "Ábrela cuando…" */
+  .cartas-sec .sobres{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 10px;margin-top:12px}
+  .sobre{border:0;background:none;color:#fff6e2;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;font:inherit}
+  .sb-cuerpo{position:relative;width:100%;max-width:96px;aspect-ratio:1.45;border-radius:4px;background:linear-gradient(160deg,#f6ecd6,#e6d5b2);
+    box-shadow:0 6px 14px rgba(0,0,0,.35);overflow:hidden;transition:transform .2s}
+  .sb-cuerpo::before{content:"";position:absolute;inset:0;background:linear-gradient(to top right,transparent 49%,rgba(150,110,60,.25) 50%,transparent 51%),
+    linear-gradient(to top left,transparent 49%,rgba(150,110,60,.25) 50%,transparent 51%)}
+  .sb-solapa{position:absolute;left:0;right:0;top:0;height:58%;background:linear-gradient(180deg,#efe1c2,#e2cfa6);clip-path:polygon(0 0,100% 0,50% 100%);
+    transform-origin:top;transition:transform .5s;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2))}
+  .sb-lacre{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:24px;height:24px;border-radius:50%;display:grid;place-items:center;
+    font-size:.7rem;color:#f2b2a4;background:radial-gradient(circle at 35% 30%,#d64a45,#8f1d1d 60%,#5e0b0b);box-shadow:0 2px 4px rgba(0,0,0,.35)}
+  .sobre:hover .sb-cuerpo{transform:translateY(-3px) rotate(-2deg)}
+  .sobre.leida .sb-solapa{transform:rotateX(180deg) translateY(2px);opacity:.75}
+  .sobre.leida .sb-lacre{opacity:.4}
+  .sb-ico{font-size:1.15rem;line-height:1;margin-top:2px}
+  .sb-txt{font-family:"Caveat",cursive;font-size:1.05rem;line-height:1.05;text-align:center;opacity:.95}
+  .carta.carta-sobre .cs-papel{background:#fffdf6;border-radius:6px;padding:18px 16px;box-shadow:0 6px 16px rgba(0,0,0,.12);
+    background-image:repeating-linear-gradient(180deg,transparent 0 29px,rgba(47,111,176,.14) 29px 30px)}
+  .cs-kick{font-family:"Caveat",cursive;font-size:1.15rem;color:var(--rojo)}
+  .carta-sobre .cs-papel h2{font-family:"Caveat",cursive;font-weight:700;font-size:1.9rem;margin:0 0 6px}
+  .carta .cs-txt{font-family:"Caveat",cursive;font-size:1.35rem;line-height:30px;text-align:left}
+  .cs-firma{font-family:"Caveat",cursive;font-size:1.35rem;color:var(--rojo);text-align:right;margin-top:8px}
+
+  /* Bulnes en el mapa del viaje */
+  .m-bulnes{cursor:pointer}
+  .m-cor{fill:#e0314b;stroke:#fff;stroke-width:.8;transform-box:fill-box;transform-origin:50% 100%;animation:mcor 1.3s ease-in-out infinite}
+  @keyframes mcor{0%,100%{transform:scale(1)}15%{transform:scale(1.25)}30%{transform:scale(1)}45%{transform:scale(1.18)}}
+  .m-bul-txt{font:italic 600 8px "Fraunces",Georgia,serif;fill:#f3d27a}
+  .m-globo{position:absolute;z-index:3;width:170px;background:#fff6e2;color:var(--tinta);border-radius:10px;padding:6px 6px 8px;text-align:center;
+    box-shadow:0 10px 24px rgba(0,0,0,.45);font-size:.8rem;font-weight:600}
+  .m-globo img{display:block;width:100%;height:110px;object-fit:cover;border-radius:6px;margin-bottom:5px;background:#e8dcc0}
 </style>
 </head>
 <body>
@@ -653,10 +913,60 @@
 <div class="suelo" aria-hidden="true"><svg viewBox="0 0 400 16" preserveAspectRatio="none">
   <path d="M0 9Q25 1 50 7T100 6T150 8T200 5T250 8T300 6T350 8T400 6V16H0Z" fill="#eef3fa"/></svg></div>
 
-<script src="mensajes.js"></script>
 <script>
-(function(){
-  const C = window.CALENDARIO || CALENDARIO;
+/* 🔒 Todo lo personal va cifrado (datos.bin y la carpeta m/).
+   La clave viaja en el enlace, después de #k= , y nunca se sube a GitHub. */
+window.ADV = (function(){
+  const b64u = s => { s = s.replace(/-/g,"+").replace(/_/g,"/"); while (s.length % 4) s += "=";
+    return Uint8Array.from(atob(s), c => c.charCodeAt(0)); };
+  let clave = null, mapa = {};
+  const cache = {};
+  async function descifrar(buf){
+    const b = new Uint8Array(buf);
+    return new Uint8Array(await crypto.subtle.decrypt({name:"AES-GCM", iv:b.slice(0,12)}, clave, b.slice(12)));
+  }
+  function candado(){
+    const d = document.createElement("div"); d.className = "candado";
+    d.innerHTML = `<div><b>🔒</b><h1>Este calendario es solo para una persona</h1>
+      <p>Ábrelo desde el enlace que te mandaron por WhatsApp 🎄</p></div>`;
+    document.body.append(d);
+  }
+  async function probar(k){
+    clave = await crypto.subtle.importKey("raw", b64u(k), "AES-GCM", false, ["decrypt"]);
+    const r = await fetch("datos.bin", {cache:"no-cache"});
+    if (!r.ok) throw new Error("sin datos");
+    return JSON.parse(new TextDecoder().decode(await descifrar(await r.arrayBuffer())));
+  }
+  async function datos(){
+    if (window.CALENDARIO) return window.CALENDARIO;           // copia local sin cifrar (solo para pruebas)
+    const delEnlace = (location.hash.match(/k=([\w-]+)/) || [])[1];
+    let guardada = null; try { guardada = localStorage.getItem("adviento-k"); } catch(e){}
+    for (const k of [delEnlace, guardada]) {
+      if (!k || !window.crypto || !crypto.subtle) continue;
+      try {
+        const C = await probar(k);
+        try { localStorage.setItem("adviento-k", k); } catch(e){}
+        mapa = C._media || {};
+        return C;
+      } catch(e){}
+    }
+    candado(); return null;
+  }
+  function media(nombre){
+    if (window.CALENDARIO) return Promise.resolve(nombre);
+    const m = mapa[nombre];
+    if (!m) return Promise.reject(new Error("no está: " + nombre));
+    return cache[nombre] || (cache[nombre] = fetch(m.f).then(r => { if (!r.ok) throw 0; return r.arrayBuffer(); })
+      .then(descifrar).then(u8 => URL.createObjectURL(new Blob([u8], {type:m.t})))
+      .catch(e => { delete cache[nombre]; throw e; }));
+  }
+  return {datos, media};
+})();
+</script>
+<script>
+(async function(){
+  const C = await ADV.datos();
+  if (!C) return;
   const $ = (s) => document.querySelector(s);
 
   /* ---------- Fecha de hoy en hora de España ---------- */
@@ -709,7 +1019,7 @@
     b.innerHTML = 'MODO PRUEBA · todas abiertas <button type="button">↺ Cerrar todas</button>';
     b.querySelector("button").onclick = () => {
       abiertas = []; guardar();
-      try { Object.keys(localStorage).filter(k => /^adviento-(ruleta|juego|rasca)-/.test(k)).forEach(k => localStorage.removeItem(k)); } catch(e){}
+      try { Object.keys(localStorage).filter(k => /^adviento-(ruleta|juego|rasca|doble|cartas)-/.test(k)).forEach(k => localStorage.removeItem(k)); } catch(e){}
       canjeados = []; guardarCanj();
       document.querySelectorAll(".puerta.abierta").forEach(p => p.classList.remove("abierta","instant"));
       actualizarCartera();
@@ -813,7 +1123,7 @@
 
     const mostrarRes = (v) => {
       res.innerHTML = "";
-      const vv = crearVale(cfg.tipoVale || "spa", `${v} ${unidad}`, n);
+      const vv = crearVale(cfg.tipoVale || "spa", `${v} ${unidad}`, n, null, {valeMeta: cfg.valeMeta});
       res.append(vv);
     };
     let rot = 0, girando = false, guardado = null;
@@ -1016,30 +1326,37 @@
 
   /* ===================== VALES CON DISEÑO ===================== */
   const ICONO_VALE = {cine:"🎬", dorsal:"🏃", sushi:"🍣", churreria:"🍫", spa:"💆‍♀️"};
-  function crearVale(tipo, texto, n){
+  function crearVale(tipo, texto, n, nota, extra){
+    extra = extra || {};
+    const meta = def => el("div","v-meta", extra.valeMeta || def);
     const v = el("div","vale" + (tipo ? " vale-" + tipo : ""));
     const fuerte = el("strong",null,texto);
     if (tipo === "cine") {
       const main = el("div","v-main");
-      main.append(el("div","v-cab","🎬 CINE NOJAVIDAD · ENTRADA"), fuerte, el("div","v-meta","SALA 1 · SESIÓN: MARATÓN NAVIDEÑO · FILA: LA DEL SOFÁ"));
+      main.append(el("div","v-cab","🎬 CINE NOJAVIDAD · ENTRADA"), fuerte, meta("SALA 1 · SESIÓN: MARATÓN NAVIDEÑO · FILA: LA DEL SOFÁ"));
       const stub = el("div","v-stub"); stub.append(el("span",null,"ADMITE"), el("b",null,"2"), el("span",null,"❤️"));
       v.append(main, stub);
     } else if (tipo === "dorsal") {
       ["p1","p2","p3","p4"].forEach(k => v.append(el("span","pin " + k)));
       v.append(el("div","v-cab","CARRERA NOJAVIDAD 2026"), el("div","dorsal-num",String(n).padStart(3,"0")), fuerte,
-               el("div","v-meta","Categoría: pareja · Salida: cuando tú digas"));
+               meta("Categoría: pareja · Salida: cuando tú digas"));
     } else if (tipo === "sushi") {
       v.append(el("div","v-cab","🍣 SUSHI NOJAVIDAD · MENÚ ESPECIAL"), fuerte, el("div","precio","INVITO YO"),
-               el("div","v-meta","Válido para 2 personas · Palillos incluidos"));
+               meta("Válido para 2 personas · Palillos incluidos"));
     } else if (tipo === "churreria") {
       v.append(el("div","v-cab","."), el("div","nombre","Churrería 800 km"),
                el("div","v-meta",`Pedido nº ${String(n).padStart(4,"0")} · Para llevar… hasta ti`), fuerte, el("div","v-meta","¡Que aproveche! 🍫"));
     } else if (tipo === "spa") {
       v.append(el("span","flor","🌿"), el("div","v-cab","SPA NOJAVIDAD · RESERVA"), fuerte,
-               el("div","v-meta","Terapeuta: tu chico · Música relajante incluida"));
+               meta("Terapeuta: tu chico · Música relajante incluida"));
+    } else if (tipo === "desayuno") {
+      const ul = el("ul");
+      (extra.menu || []).forEach(([ico, plato, precio]) => { const li = el("li"); li.append(el("span",null,`${ico} ${plato}`), el("span","pts"), el("b",null,precio)); ul.append(li); });
+      v.append(el("div","v-cab","🛎️ ROOM SERVICE NOJAVIDAD · MENÚ DEL DÍA"), fuerte, ul, el("div","v-meta", extra.valePie || ""));
     } else {
       v.append(el("small",null,"Vale por"), fuerte);
     }
+    if (nota) v.append(el("div","v-nota",nota));
     return v;
   }
 
@@ -1050,7 +1367,7 @@
   const guardarJuego = (n, o) => { try { localStorage.setItem(`adviento-juego-${ANIO}-${n}`, JSON.stringify(o)); } catch(e){} };
   function premioJuego(premio, d, n, nivel){
     premio.innerHTML = "";
-    premio.append(crearVale(d.tipoVale, rellenar(d.vale,n) + (nivel === "dificil" ? " + ración doble, por campeona 🏆" : ""), n));
+    premio.append(crearVale(d.tipoVale, rellenar(d.vale,n) + (nivel === "dificil" ? " + ración doble, por campeona 🏆" : ""), n, d.valeNota, d));
   }
 
   // 🍫 Atrapa los churros
@@ -1402,7 +1719,7 @@
     const gal = o.querySelector(".galeria");
     Object.keys(C.dias || {}).map(Number).sort((a,b) => a-b).forEach((n,i) => {
       const d = C.dias[n]; if (!d.foto) return;
-      const f = el("figure","polaroid"); const im = el("img"); im.src = d.foto; im.alt = d.titulo || ""; im.loading = "lazy";
+      const f = el("figure","polaroid"); const im = el("img"); ponerSrc(im, d.foto); im.alt = d.titulo || ""; im.loading = "lazy";
       f.append(im, el("span",null,`Día ${n}`)); f.style.transform = `rotate(${i % 2 ? 4 : -4}deg)`;
       gal.append(f);
     });
@@ -1636,13 +1953,15 @@
         const g = leerJuego(n);
         lista.push(g && g.ganado ? {id:"v"+n, n, tipo:d.tipoVale, texto:rellenar(d.vale,n) + (g.nivel === "dificil" ? " + ración doble, por campeona 🏆" : "")}
                                  : {id:"v"+n, n, tipo:d.tipoVale, texto:"Vale bloqueado: ¡gana el juego del día para conseguirlo! 🎮", pendiente:true});
-      } else if (d.vale) lista.push({id:"v"+n, n, tipo:d.tipoVale, texto:rellenar(d.vale,n)});
+      } else if (d.vale) lista.push({id:"v"+n, n, tipo:d.tipoVale, texto:rellenar(d.valeCartera || d.vale,n)});
       if (d.ruleta) {
         let g = null; try { g = JSON.parse(localStorage.getItem(`adviento-ruleta-${ANIO}-${n}`)); } catch(e){}
         lista.push(g ? {id:"r"+n, n, tipo:d.tipoVale || "spa", texto:`${g.v} ${d.ruleta.unidad || "minutos de masaje relajante"}`}
                      : {id:"r"+n, n, texto:"Ruleta del masaje: ¡aún no la has girado! 🎡", pendiente:true});
       }
     }
+    const dn = leerDoble();
+    if (dn && dn.id) lista.forEach(v => { if (v.id === dn.id && !v.pendiente) v.extra = dn.res === "x2" ? "x2" : "pierde"; });
     return lista;
   }
   function actualizarCartera(){
@@ -1656,7 +1975,7 @@
   }
   function mostrarCartera(){
     pararEscritura(); pararJuego();
-    carta.innerHTML = ""; carta.classList.remove("con-nota");
+    pararTodo(); carta.innerHTML = ""; carta.classList.remove("con-nota","carta-antigua","carta-sobre");
     const x = el("button","cerrar","×"); x.setAttribute("aria-label","Cerrar"); x.onclick = cerrar;
     carta.append(x, el("div","big-icono","🎟️"));
     const h = el("h2",null,"Tu cartera de vales"); h.id = "carta-titulo"; carta.append(h);
@@ -1664,7 +1983,7 @@
     const lista = valesDesbloqueados(), cont = el("div","tickets");
     if (!lista.length) cont.append(el("p","vacio","Todavía no tienes vales. ¡Sigue abriendo puertas!"));
     lista.forEach(v => {
-      const t = el("button","ticket" + (v.tipo && !v.pendiente ? " t-" + v.tipo : "") + (v.pendiente ? " pend" : "") + (canjeados.includes(v.id) ? " usado" : ""));
+      const t = el("button","ticket" + (v.tipo && !v.pendiente ? " t-" + v.tipo : "") + (v.extra ? " t-" + v.extra : "") + (v.pendiente ? " pend" : "") + (canjeados.includes(v.id) ? " usado" : ""));
       t.type = "button";
       const dia = el("div","ticket-dia"); dia.append(ICONO_VALE[v.tipo] || "Día", el("b",null,String(v.n)));
       t.append(dia, el("div","ticket-txt",v.texto));
@@ -1698,6 +2017,497 @@
     };
     escrituraT = setTimeout(paso, 1000);
     carta.addEventListener("click", fin);   // tocar la carta = verlo entero
+  }
+
+
+  /* ===================== FOTOS Y AUDIOS CIFRADOS ===================== */
+  function ponerSrc(img, nombre){ ADV.media(nombre).then(u => { img.src = u; }).catch(() => {}); return img; }
+  const esperar = ms => new Promise(r => setTimeout(r, ms));
+
+  /* ===================== DÍA 2: RASCAR → MAPA → BULNES ===================== */
+  let uidSvg = 0;
+  function crearMapaBulnes(d, n, pTexto){
+    const clave = `adviento-rasca-${ANIO}-${n}`;
+    let hecho = false; try { hecho = localStorage.getItem(clave) === "1"; } catch(e){}
+    const id = "b" + (++uidSvg);
+    const [ex,ey] = PX(-0.70,38.27), [zx,zy] = PX(-2.96,43.27), [bx,by] = PX(-4.82,43.24);
+    const dE = `M${ex} ${ey}Q${(+ex + +bx)/2 + 18} ${(+ey + +by)/2 + 18} ${bx} ${by}`;
+    const dZ = `M${zx} ${zy}Q${(+zx + +bx)/2} ${+zy - 20} ${bx} ${by}`;
+    const w = el("div","bulnes-caja");
+    w.innerHTML = `
+      <svg class="b-mapa" viewBox="-6 -10 312 262" aria-hidden="true">
+        <defs>
+          <mask id="${id}e" maskUnits="userSpaceOnUse"><path class="b-mk" d="${dE}"/></mask>
+          <mask id="${id}z" maskUnits="userSpaceOnUse"><path class="b-mk" d="${dZ}"/></mask>
+        </defs>
+        <rect x="-6" y="-10" width="312" height="262" class="b-mar"/>
+        <g class="b-zoom">
+          <path class="b-tierra" d="M${PEN.map(p => PX(p[0],p[1]).join(" ")).join("L")}Z"/>
+          ${[[2.95,39.6,13,7],[4.1,39.95,5,2.6],[1.4,38.98,4,3]].map(([lo,la,rx,ry]) => { const [x,y] = PX(lo,la); return `<ellipse class="b-tierra" cx="${x}" cy="${y}" rx="${rx}" ry="${ry}"/>`; }).join("")}
+          <path class="b-ruta" d="${dE}" mask="url(#${id}e)"/>
+          <path class="b-ruta" d="${dZ}" mask="url(#${id}z)"/>
+          <circle class="b-pto" cx="${ex}" cy="${ey}" r="3.6"/><text class="b-txt" x="${+ex + 7}" y="${+ey + 4}">Elche</text>
+          <circle class="b-pto" cx="${zx}" cy="${zy}" r="3.6"/><text class="b-txt" x="${+zx + 5}" y="${+zy + 13}">Zorrotza</text>
+          <circle class="b-onda" cx="${bx}" cy="${by}" r="5"/>
+          <g transform="translate(${bx} ${+by - 1})"><path class="b-cor" d="M0 0C-5-4-9-8-6-12C-4-14.5-1.2-14-0-11.5C1.2-14 4-14.5 6-12C9-8 5-4 0 0Z"/></g>
+          <text class="b-txt b-bul" x="${bx}" y="${+by + 9}" text-anchor="middle">Bulnes</text>
+        </g>
+      </svg>
+      <img class="b-foto" alt="Bulnes">
+      <div class="b-label">Aquí se cruzaron nuestros caminos</div>`;
+    const foto = ponerSrc(w.querySelector(".b-foto"), d.foto);
+    const zoomG = w.querySelector(".b-zoom"), label = w.querySelector(".b-label");
+    const cor = w.querySelector(".b-cor"), onda = w.querySelector(".b-onda");
+    const mks = [...w.querySelectorAll(".b-mk")];
+    const rep = el("button","b-repetir","↺ Ver otra vez cómo empezó"); rep.type = "button";
+    const cajaFin = el("div","b-pie"); cajaFin.append(rep);
+
+    // el texto se escribe al final
+    const lineas = pTexto ? pTexto.textContent.split("\n") : [];
+    const spans = [];
+    if (pTexto) { pTexto.textContent = ""; pTexto.hidden = !(hecho || reduce); lineas.forEach((l,i) => { const s = el("span","b-linea",l); spans.push(s); pTexto.append(s); if (i < lineas.length-1) pTexto.append("\n"); }); }
+
+    function estadoFinal(){
+      if (pTexto) pTexto.hidden = false;
+      foto.style.opacity = 1; spans.forEach(s => s.classList.add("on")); rep.hidden = false;
+      zoomG.setAttribute("transform",""); label.style.opacity = 0;
+    }
+    function ponerZoom(s, cx, cy){ zoomG.setAttribute("transform", `translate(150 121) scale(${s}) translate(${-cx} ${-cy})`); }
+    function zoomA(s1, ms){
+      return new Promise(res => {
+        const t0 = performance.now();
+        const paso = now => {
+          const k = Math.min(1, (now - t0) / ms), e = k < .5 ? 2*k*k : 1 - Math.pow(-2*k + 2, 2)/2;
+          ponerZoom(1 + (s1 - 1)*e, 150 + (bx - 150)*e, 121 + (by - 121)*e);
+          k < 1 ? requestAnimationFrame(paso) : res();
+        };
+        requestAnimationFrame(paso);
+      });
+    }
+    async function animar(){
+      rep.hidden = true; w.classList.add("animando");
+      foto.style.opacity = 0; label.style.opacity = 0; zoomG.setAttribute("transform","");
+      cor.style.opacity = 0; spans.forEach(s => s.classList.remove("on"));
+      await esperar(350);
+      mks.forEach(m => { const L = m.getTotalLength(); m.style.strokeDasharray = L;
+        m.animate([{strokeDashoffset:L},{strokeDashoffset:0}],{duration:2300, easing:"ease-in-out", fill:"forwards"}); });
+      await esperar(2350);
+      cor.style.opacity = 1;
+      cor.animate([{transform:"translateY(-70px) scale(.4)",opacity:0},{transform:"translateY(3px) scale(1.3)",opacity:1,offset:.7},{transform:"none",opacity:1}],
+        {duration:750, easing:"cubic-bezier(.3,1.3,.5,1)"});
+      await esperar(600);
+      onda.animate([{transform:"scale(.5)",opacity:.9},{transform:"scale(5)",opacity:0}],{duration:900, easing:"ease-out"});
+      celebrar(cor, n);
+      await esperar(700);
+      label.animate([{opacity:0, transform:"translate(-50%,8px)"},{opacity:1, transform:"translate(-50%,0)"}],{duration:700, delay:500, fill:"forwards"});
+      await zoomA(3.3, 1900);
+      await esperar(1700);
+      foto.animate([{opacity:0},{opacity:1}],{duration:1300, fill:"forwards"}).onfinish = () => { foto.style.opacity = 1; };
+      await esperar(1300);
+      label.animate([{opacity:1},{opacity:0}],{duration:600, fill:"forwards"});
+      if (pTexto) pTexto.hidden = false;
+      for (const s of spans) { s.classList.add("on"); await esperar(900); }
+      try { localStorage.setItem(clave,"1"); } catch(_){}
+      w.classList.remove("animando"); rep.hidden = false;
+    }
+    rep.onclick = animar;
+
+    if (hecho || reduce) { estadoFinal(); return [w, cajaFin]; }
+    rep.hidden = true;
+    // capa de nieve para rascar
+    const cv = el("canvas","rasca-nieve"), pista = el("div","rasca-pista","❄️ Rasca la nieve con el dedo"), cont = el("div","b-cont","❄️ 0%");
+    w.append(cv, pista, cont);
+    const ctx = cv.getContext("2d");
+    let ancho = 0, alto = 0, rascando = false, prev = null, cuenta = 0, acabado = false;
+    function pintar(){
+      ancho = w.offsetWidth; alto = w.offsetHeight; if (!ancho || !alto) { requestAnimationFrame(pintar); return; }
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      cv.width = ancho*dpr; cv.height = alto*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+      const g = ctx.createLinearGradient(0,0,0,alto); g.addColorStop(0,"#ffffff"); g.addColorStop(1,"#dfe9f5");
+      ctx.fillStyle = g; ctx.fillRect(0,0,ancho,alto);
+      for (let i=0;i<160;i++){ ctx.fillStyle = `rgba(${170+Math.random()*60},${195+Math.random()*40},235,${.15+Math.random()*.35})`;
+        ctx.beginPath(); ctx.arc(Math.random()*ancho, Math.random()*alto, .6+Math.random()*2.2, 0, 7); ctx.fill(); }
+      ctx.fillStyle = "rgba(120,160,210,.35)"; ctx.font = "26px serif"; ctx.textAlign = "center";
+      for (let i=0;i<8;i++) ctx.fillText("❄", ancho*(.1 + Math.random()*.8), alto*(.12 + Math.random()*.7));
+    }
+    requestAnimationFrame(pintar);
+    const punto = e => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * ancho / r.width, (e.clientY - r.top) * alto / r.height]; };
+    function rascar(e){
+      if (!rascando || acabado) return;
+      const [x,y] = punto(e);
+      ctx.globalCompositeOperation = "destination-out"; ctx.lineCap = "round"; ctx.lineWidth = 26;
+      ctx.beginPath(); if (prev) { ctx.moveTo(prev[0],prev[1]); ctx.lineTo(x,y); ctx.stroke(); }
+      ctx.beginPath(); ctx.arc(x,y,13,0,7); ctx.fill();
+      prev = [x,y]; pista.style.opacity = 0;
+      if (++cuenta % 5 === 0) comprobar();
+    }
+    function comprobar(){
+      const datos = ctx.getImageData(0,0,cv.width,cv.height).data;
+      let vacio = 0, total = 0;
+      for (let i=3;i<datos.length;i+=4*29){ total++; if (datos[i] < 40) vacio++; }
+      const pct = vacio/total;
+      cont.textContent = `❄️ ${Math.min(99, Math.round(pct/.8*100))}%`;
+      if (pct > .8) {
+        acabado = true; cont.textContent = "❄️ 100%";
+        cv.animate([{opacity:1},{opacity:0}],{duration:600, fill:"forwards"}).onfinish = () => { cv.remove(); pista.remove(); cont.remove(); };
+        animar();
+      }
+    }
+    cv.addEventListener("pointerdown", e => { rascando = true; prev = null; try { cv.setPointerCapture(e.pointerId); } catch(_){} rascar(e); });
+    cv.addEventListener("pointermove", rascar);
+    ["pointerup","pointercancel","pointerleave"].forEach(t => cv.addEventListener(t, () => { rascando = false; prev = null; }));
+    return [w, cajaFin];
+  }
+
+  /* ===================== DÍA 7: CARTA ANTIGUA ===================== */
+  function crearCartaAntigua(texto, animar){
+    const w = el("div","perg");
+    const parrafos = texto.split(/\n\n/), letras = [];
+    let t = 0;
+    parrafos.forEach((par,i) => {
+      const ultimo = i === parrafos.length - 1;
+      const p = el("p", ultimo && i > 0 ? "perg-firma" : i === 0 ? "perg-saludo" : null);
+      let txt = par;
+      t += 380;
+      if (i === 1) { const cap = el("span","capitular tinta",txt[0]); cap.dataset.t = t; letras.push(cap); p.append(cap); txt = txt.slice(1); }
+      for (const ch of txt) {
+        if (ch === "\n") { p.append(document.createElement("br")); t += 250; continue; }
+        const s = el("span","tinta",ch); t += /[.,;:…!?]/.test(ch) ? 200 : 26; s.dataset.t = t; letras.push(s); p.append(s);
+      }
+      w.append(p);
+    });
+    const sello = el("div","lacre"); sello.innerHTML = "<span>J</span>"; w.append(sello);
+    const todo = () => { letras.forEach(s => s.classList.add("on")); sello.classList.add("on"); };
+    if (!animar) { todo(); return w; }
+    let vivo = true, t0 = null, idx = 0;
+    const fin = () => { if (!vivo) return; vivo = false; todo(); escrituraFin = null; carta.removeEventListener("click", fin); };
+    escrituraFin = fin;
+    const paso = now => {
+      if (!vivo) return;
+      if (t0 == null) t0 = now + 900;
+      const e = now - t0;
+      while (idx < letras.length && +letras[idx].dataset.t <= e) {
+        const s = letras[idx++]; s.classList.add("on");
+        if (idx % 60 === 0) s.scrollIntoView({block:"nearest", behavior:"smooth"});
+      }
+      if (idx >= letras.length) { vivo = false; escrituraFin = null; carta.removeEventListener("click", fin);
+        setTimeout(() => { sello.classList.add("on"); sello.scrollIntoView({block:"nearest", behavior:"smooth"}); }, 500); return; }
+      requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(paso);
+    setTimeout(() => carta.addEventListener("click", fin), 50);   // tocar la carta = verla entera
+    return w;
+  }
+
+  /* ===================== DÍA 8: TOCADISCOS ===================== */
+  function crearTocadiscos(nombre){
+    const w = el("div","td-caja");
+    w.innerHTML = `
+      <div class="td">
+        <div class="td-tapa"></div>
+        <div class="td-plato"><div class="td-vinilo"><div class="td-brillo"></div>
+          <div class="td-etiqueta"><div><b>Para Jur</b><small>CARA A</small><i>NOJAVIDAD RECORDS</i></div></div></div></div>
+        <div class="td-brazo"><svg viewBox="0 0 100 260">
+          <circle cx="72" cy="31" r="20" fill="#c9c9c9" stroke="#8a8a8a" stroke-width="3"/><circle cx="72" cy="31" r="8" fill="#6d6d6d"/>
+          <rect x="58" y="4" width="28" height="14" rx="4" fill="#3a3a3a"/>
+          <path d="M72 31 L60 200 Q58 222 44 232" fill="none" stroke="#d9d9d9" stroke-width="7" stroke-linecap="round"/>
+          <path d="M72 31 L60 200 Q58 222 44 232" fill="none" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>
+          <rect x="26" y="226" width="30" height="20" rx="4" transform="rotate(-28 41 236)" fill="#2b2b2b"/>
+          <rect x="30" y="230" width="10" height="5" rx="2" transform="rotate(-28 41 236)" fill="#e0bd6a"/></svg></div>
+        <div class="td-led"></div><div class="td-rpm">33 RPM</div><div class="td-marca">Nojavidad</div>
+        <button class="td-play" type="button" aria-label="Reproducir">▶</button>
+      </div>
+      <div class="td-prog">
+        <div class="td-barra"><div class="td-relleno"></div></div>
+        <div class="td-tiempos"><span>0:00</span><span>0:00</span></div>
+        <div class="td-ondas"><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+      <p class="td-falta" hidden>🎙️ La nota de voz está de camino… vuelve un poco más tarde 🎧</p>`;
+    const td = w.querySelector(".td"), play = w.querySelector(".td-play"), audio = new Audio();
+    const [t1,t2] = w.querySelectorAll(".td-tiempos span"), rell = w.querySelector(".td-relleno");
+    const fmt = s => isFinite(s) ? `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,"0")}` : "0:00";
+    let listo = false, tm = null;
+    ADV.media(nombre).then(u => { audio.src = u; audio.preload = "metadata"; listo = true; })
+      .catch(() => { w.querySelector(".td-falta").hidden = false; play.disabled = true; });
+    play.onclick = () => {
+      if (!listo) return;
+      if (td.classList.contains("sonando")) { audio.pause(); td.classList.remove("sonando"); play.textContent = "▶"; clearTimeout(tm); return; }
+      td.classList.add("sonando"); play.textContent = "❚❚";
+      // se desbloquea el audio con el toque y suena cuando la aguja baja
+      audio.muted = true;
+      audio.play().then(() => { audio.pause(); audio.muted = false; tm = setTimeout(() => audio.play().catch(()=>{}), 900); })
+        .catch(() => { audio.muted = false; tm = setTimeout(() => audio.play().catch(()=>{}), 900); });
+    };
+    audio.addEventListener("loadedmetadata", () => t2.textContent = fmt(audio.duration));
+    audio.addEventListener("timeupdate", () => { t1.textContent = fmt(audio.currentTime); rell.style.width = (audio.currentTime / audio.duration * 100) + "%"; });
+    audio.addEventListener("ended", () => { td.classList.remove("sonando"); play.textContent = "▶"; });
+    w.querySelector(".td-barra").onclick = e => { const r = e.currentTarget.getBoundingClientRect(); if (audio.duration) audio.currentTime = (e.clientX - r.left) / r.width * audio.duration; };
+    paradores.push(() => { clearTimeout(tm); audio.pause(); });
+    return w;
+  }
+  // cosas que hay que parar al cerrar la tarjeta (audio, etc.)
+  const paradores = [];
+  function pararTodo(){ while (paradores.length) { try { paradores.pop()(); } catch(e){} } }
+
+  /* ===================== DÍA 9: EL FOTOLIBRO CON LA CANCIÓN ===================== */
+  function cargarYT(){
+    if (window.YT && YT.Player) return Promise.resolve();
+    if (cargarYT.p) return cargarYT.p;
+    return cargarYT.p = new Promise((res, rej) => {
+      const prev = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => { if (prev) prev(); res(); };
+      const s = document.createElement("script"); s.src = "https://www.youtube.com/iframe_api";
+      s.onerror = () => { cargarYT.p = null; rej(); }; document.head.append(s);
+      setTimeout(() => rej(new Error("tarde")), 9000);
+    });
+  }
+  function crearLibroMini(cfg){
+    const w = el("div","libro-mini");
+    w.innerHTML = `<button class="lm-tapa" type="button" aria-label="Abrir el libro"><span class="lm-orn">❦</span><span class="lm-tit">Nosotros</span><span class="lm-orn">— ✦ —</span><span class="lm-sub">JUR &amp; TU CHICO</span></button>
+      <button class="btn-juego lm-btn" type="button">▶ Abrir el libro</button>
+      <p class="lm-pista">🔊 Sube el volumen: va con nuestra canción</p>`;
+    w.querySelectorAll("button").forEach(b => b.onclick = () => abrirLibro(cfg));
+    cargarYT().catch(() => {});
+    return w;
+  }
+  const PEG = ["🌿","✿","❦","☙","🍂","✦"];
+  function abrirLibro(cfg){
+    const fotos = cfg.fotos || [];
+    const o = el("div","lb-overlay");
+    o.innerHTML = `
+      <button class="cerrar lb-x" type="button" aria-label="Cerrar">×</button>
+      <div class="lb-cab"><small>DÍA 9 DE DICIEMBRE</small><h3>🎵 Nuestra canción</h3></div>
+      <div class="lb-escena"><div class="lb-libro"><div class="lb-contra"></div></div></div>
+      <div class="lb-yt-caja"><div class="lb-yt"><div></div></div><div class="lb-aviso" hidden>🎵 Si no suena, toca ▶ en el vídeo</div></div>
+      <div class="lb-ctrl"><button type="button" class="lb-prev" aria-label="Anterior">◀</button><button type="button" class="lb-pausa" aria-label="Pausa">❚❚</button>
+        <span class="lb-cnt">Portada</span><button type="button" class="lb-next" aria-label="Siguiente">▶</button></div>`;
+    document.body.append(o);
+    document.body.classList.add("sin-scroll");
+    const libro = o.querySelector(".lb-libro"), hojas = [];
+    const hoja = (frente, cf, cd) => { const h = el("div","lb-hoja");
+      h.innerHTML = `<div class="lb-cara lb-frente ${cf}">${frente}<div class="lb-sombra"></div></div><div class="lb-cara lb-dorso ${cd}"><div class="lb-sombra"></div></div>`;
+      hojas.push(h); return h; };
+    const tapa = hoja(`<div class="lb-marco"></div><div class="lb-esq a"></div><div class="lb-esq b"></div>
+      <div class="lb-oro lb-orn">❦</div><h2 class="lb-oro">Nosotros</h2><div class="lb-oro lb-orn">— ✦ —</div>
+      <p class="lb-oro">JUR &amp; TU CHICO</p><p class="lb-oro" style="margin-top:8px">MMXXVI</p>`, "lb-cuero", "lb-guardas");
+    hoja(`<div class="lb-pag lb-portadilla"><h4>Nosotros</h4><div class="lb-sub">un álbum de Jur y tu chico</div>
+      <div class="lb-bso">BANDA SONORA · ${(cfg.cancion || "").toUpperCase()}</div><div class="lb-peg" style="bottom:40px;right:40px">❦</div></div>`, "lb-papel", "lb-papel");
+    fotos.forEach((f,i) => {
+      const r = ((i*37)%7 - 3) * .7, pos = i%2 ? "top:14px;right:18px" : "bottom:52px;left:22px";
+      const h = hoja(`<div class="lb-pag"><div class="lb-foto" style="transform:rotate(${r}deg)"><img alt=""><i class="ec tl"></i><i class="ec tr"></i><i class="ec bl"></i><i class="ec br"></i></div>
+        <div class="lb-pie"></div><div class="lb-num">— ${i+1} —</div><div class="lb-peg" style="${pos}">${PEG[i % PEG.length]}</div></div>`, "lb-papel", "lb-papel");
+      h.querySelector(".lb-pie").textContent = f.pie || "";
+      ponerSrc(h.querySelector("img"), f.src);
+    });
+    const fin = el("div","lb-hoja");
+    fin.innerHTML = `<div class="lb-cara lb-frente lb-papel"><div class="lb-pag lb-final"><div class="lb-t"></div><div class="lb-cont">Continuará…</div>
+      <a class="lb-spoti" target="_blank" rel="noopener">▶ Escúchala en Spotify</a><div class="lb-firma">Te quiero, tu chico</div></div></div>`;
+    fin.querySelector(".lb-t").textContent = cfg.final || "";
+    const sp = fin.querySelector(".lb-spoti"); if (cfg.spotify) sp.href = cfg.spotify; else sp.remove();
+    libro.append(fin); fin.style.zIndex = 1;
+    for (let i = hojas.length-1; i >= 0; i--) { hojas[i].style.zIndex = hojas.length - i + 1; libro.append(hojas[i]); }
+
+    let actual = 0, pausado = false, timer = null, tPag = 8500, player = null, sonando = false, cerrado = false, avisoT = null;
+    const KF = [{transform:"rotateY(0deg)",offset:0},{transform:"rotateY(-100deg)",offset:.55},{transform:"rotateY(-180deg)",offset:1}];
+    const KO = [{opacity:1,offset:0},{opacity:1,offset:.62},{opacity:0,offset:1}];
+    const cnt = o.querySelector(".lb-cnt"), bPausa = o.querySelector(".lb-pausa");
+    const contar = () => { cnt.textContent = actual <= 1 ? "Portada" : actual > hojas.length-1 ? "Fin" : `${actual-1} / ${fotos.length}`; };
+    function pasar(dir = 1, dur = 1500){
+      if (dir > 0 && actual >= hojas.length) return Promise.resolve();
+      if (dir < 0 && actual <= 1) return Promise.resolve();
+      const h = dir > 0 ? hojas[actual] : hojas[actual-1];
+      actual += dir; contar();
+      h.style.visibility = "visible"; h.style.zIndex = 500;
+      const op = {duration:dur, easing:"cubic-bezier(.45,.05,.3,1)", fill:"forwards", direction: dir > 0 ? "normal" : "reverse"};
+      const a = h.animate(KF, op); h.animate(KO, op);
+      h.querySelectorAll(".lb-sombra").forEach(s => s.animate([{opacity:0},{opacity:1,offset:.5},{opacity:0}],{duration:dur}));
+      return a.finished.then(() => { if (dir > 0) h.style.visibility = "hidden"; else h.style.zIndex = hojas.length - hojas.indexOf(h) + 1; });
+    }
+    function programar(){
+      clearTimeout(timer); if (pausado || cerrado || actual === 0) return;
+      timer = setTimeout(() => { if (actual < hojas.length) pasar(1).then(programar); else cerrarTapa(); }, actual >= hojas.length ? 9000 : tPag);
+    }
+    async function cerrarTapa(){
+      if (cerrado) return;
+      tapa.style.visibility = "visible"; tapa.style.zIndex = 900;
+      const op = {duration:1700, easing:"cubic-bezier(.45,.05,.3,1)", fill:"forwards", direction:"reverse"};
+      tapa.animate(KF, op); tapa.animate(KO, op);
+    }
+    // la canción (YouTube)
+    function crearPlayer(){
+      cargarYT().then(() => {
+        if (cerrado) return;
+        player = new YT.Player(o.querySelector(".lb-yt div"), {
+          videoId: cfg.youtube, width: "100%", height: "100%",
+          playerVars: {autoplay:1, playsinline:1, rel:0, modestbranding:1},
+          events: {
+            onReady: e => { try { e.target.playVideo(); } catch(_){} },
+            onStateChange: e => {
+              if (e.data === YT.PlayerState.PLAYING) {
+                o.querySelector(".lb-aviso").hidden = true; sonando = true;
+                const dur = player.getDuration && player.getDuration();
+                if (dur > 30) tPag = Math.max(5000, (dur - 10) * 1000 / (fotos.length + 1));
+                if (pausado) { pausado = false; bPausa.textContent = "❚❚"; }
+                programar();
+              } else if (e.data === YT.PlayerState.PAUSED) { pausado = true; bPausa.textContent = "▶︎"; clearTimeout(timer); }
+              else if (e.data === YT.PlayerState.ENDED) {
+                clearTimeout(timer);
+                (async () => { while (actual < hojas.length && !cerrado) await pasar(1, 400); setTimeout(cerrarTapa, 7000); })();
+              }
+            }
+          }
+        });
+      }).catch(() => { o.querySelector(".lb-aviso").textContent = "🎵 No se ha podido cargar la canción: ábrela en Spotify al final"; o.querySelector(".lb-aviso").hidden = false; });
+    }
+    crearPlayer();
+    setTimeout(async () => {
+      await pasar(1, 1700);                       // se abre la tapa
+      avisoT = setTimeout(() => { if (!sonando) { o.querySelector(".lb-aviso").hidden = false; programar(); } }, 2600);
+    }, 500);
+
+    o.querySelector(".lb-next").onclick = () => { pasar(1).then(programar); };
+    o.querySelector(".lb-prev").onclick = () => { pasar(-1).then(programar); };
+    bPausa.onclick = () => {
+      pausado = !pausado; bPausa.textContent = pausado ? "▶︎" : "❚❚";
+      try { if (player) pausado ? player.pauseVideo() : player.playVideo(); } catch(_){}
+      pausado ? clearTimeout(timer) : programar();
+    };
+    let x0 = null;
+    libro.addEventListener("touchstart", e => x0 = e.touches[0].clientX, {passive:true});
+    libro.addEventListener("touchend", e => { if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) pasar(dx < 0 ? 1 : -1).then(programar); x0 = null; });
+    o.querySelector(".lb-x").onclick = () => {
+      cerrado = true; clearTimeout(timer); clearTimeout(avisoT);
+      try { player && player.destroy(); } catch(_){}
+      document.body.classList.remove("sin-scroll");
+      o.animate([{opacity:1},{opacity:0}],{duration:300}).onfinish = () => o.remove();
+    };
+  }
+
+  /* ===================== DÍA 23: ¿DOBLE O NADA? ===================== */
+  const CLAVE_DOBLE = "adviento-doble-" + ANIO;
+  const leerDoble = () => { try { return JSON.parse(localStorage.getItem(CLAVE_DOBLE)); } catch(e){ return null; } };
+  function crearDobleNada(n){
+    const w = el("div","doble");
+    w.append(el("div","doble-tit","🎲 ¿Doble o nada?"),
+      el("p","doble-exp","Elige uno de tus vales y juégatelo a cara o cruz.\nSi sale ×2, lo duplicas. Si sale 😈… pasa a ser un vale para mí, y me lo haces tú a mí 😏\nSolo hay un intento."));
+    const zona = el("div","doble-zona"); w.append(zona);
+    const moneda = () => { const m = el("div","moneda"); m.innerHTML = `<div class="mo-cara mo-x2">×2</div><div class="mo-cara mo-diablo">😈</div>`; return m; };
+    function resultado(st){
+      zona.innerHTML = "";
+      if (st.plantado) { zona.append(el("p","doble-res","Te plantaste 😌 Tus vales se quedan como estaban.")); return; }
+      const lista = valesDesbloqueados(), v = lista.find(x => x.id === st.id) || {texto: st.txt, n: "?"};
+      const gana = st.res === "x2";
+      zona.append(el("p","doble-res", gana ? "¡Ha salido ×2! Vale duplicado ✨" : "Ha salido 😈… mala suerte"));
+      const t = el("div","doble-vale " + (gana ? "dv-x2" : "dv-pierde"));
+      t.append(el("small",null, gana ? "VALE DUPLICADO" : "VALE PARA TU CHICO"), el("strong",null, st.txt), el("span","dv-sello", gana ? "DUPLICADO ✨" : "Mala suerte 😏"));
+      zona.append(t);
+      if (prueba) { const b = el("button","btn-juego claro","↺ Repetir (solo en modo prueba)"); b.type = "button";
+        b.onclick = () => { try { localStorage.removeItem(CLAVE_DOBLE); } catch(e){} actualizarCartera(); elegir(); }; zona.append(b); }
+    }
+    function elegir(){
+      zona.innerHTML = "";
+      const vales = valesDesbloqueados().filter(v => !v.pendiente && !canjeados.includes(v.id));
+      if (!vales.length) { zona.append(el("p","doble-res","Todavía no tienes vales para jugarte… abre las puertas que te falten y vuelve 😉")); return; }
+      let sel = null;
+      const lista = el("div","tickets doble-lista");
+      vales.forEach(v => {
+        const t = el("button","ticket" + (v.tipo ? " t-" + v.tipo : "")); t.type = "button";
+        const dia = el("div","ticket-dia"); dia.append(ICONO_VALE[v.tipo] || "Día", el("b",null,String(v.n)));
+        t.append(dia, el("div","ticket-txt",v.texto));
+        t.onclick = () => { lista.querySelectorAll(".ticket").forEach(x => x.classList.remove("elegido")); t.classList.add("elegido"); sel = v;
+          conf.textContent = `Te juegas: «${v.texto}»`; lanzar.disabled = false; };
+        lista.append(t);
+      });
+      const conf = el("p","doble-conf","Toca el vale que te quieres jugar 👆");
+      const lanzar = el("button","boton-girar","🪙 ¡Lanzar la moneda!"); lanzar.type = "button"; lanzar.disabled = true;
+      const planto = el("button","btn-juego claro doble-planto","Me planto"); planto.type = "button";
+      zona.append(lista, conf, lanzar, planto);
+      planto.onclick = () => { try { localStorage.setItem(CLAVE_DOBLE, JSON.stringify({plantado:true})); } catch(e){} resultado({plantado:true}); };
+      lanzar.onclick = () => {
+        if (!sel) return;
+        const gana = Math.random() < .5, st = {id: sel.id, txt: sel.texto, res: gana ? "x2" : "pierde"};
+        try { localStorage.setItem(CLAVE_DOBLE, JSON.stringify(st)); } catch(e){}
+        zona.innerHTML = ""; const esc = el("div","moneda-esc"), m = moneda(); esc.append(m); zona.append(esc, el("p","doble-conf","Cara o cruz…"));
+        const vueltas = 7*360 + (gana ? 0 : 180);
+        m.animate([{transform:"translateY(0) rotateY(0deg)"},{transform:`translateY(-120px) rotateY(${vueltas/2}deg)`,offset:.45},
+                   {transform:`translateY(0) rotateY(${vueltas}deg)`}],{duration: reduce ? 400 : 2400, easing:"cubic-bezier(.3,.1,.3,1)", fill:"forwards"});
+        setTimeout(() => {
+          try { navigator.vibrate && navigator.vibrate(gana ? [30,60,30,60,80] : [200]); } catch(_){}
+          if (gana && !reduce) celebrar(esc, n);
+          setTimeout(() => { resultado(st); actualizarCartera(); }, 900);
+        }, reduce ? 450 : 2450);
+      };
+    }
+    const st = leerDoble();
+    st ? resultado(st) : elegir();
+    return w;
+  }
+
+  /* ===================== CARTAS "ÁBRELA CUANDO…" ===================== */
+  const CLAVE_CARTAS = "adviento-cartas-" + ANIO;
+  function crearCartas(){
+    const lista = Array.isArray(C.cartas) ? C.cartas : [];
+    if (!lista.length) return;
+    let leidas = []; try { leidas = JSON.parse(localStorage.getItem(CLAVE_CARTAS)) || []; } catch(e){}
+    const s = el("section","viaje cartas-sec");
+    s.append(el("h3",null,"Ábrela cuando…"), el("p","sub","Puedes abrirlas el día que lo necesites"));
+    const g = el("div","sobres");
+    lista.forEach((c,i) => {
+      const b = el("button","sobre" + (leidas.includes(i) ? " leida" : "")); b.type = "button";
+      b.innerHTML = `<span class="sb-cuerpo"><span class="sb-solapa"></span><span class="sb-lacre">❤</span></span><span class="sb-ico"></span><span class="sb-txt"></span>`;
+      b.querySelector(".sb-ico").textContent = c.icono || "💌";
+      b.querySelector(".sb-txt").textContent = c.titulo || "";
+      b.onclick = () => {
+        if (!leidas.includes(i)) { leidas.push(i); try { localStorage.setItem(CLAVE_CARTAS, JSON.stringify(leidas)); } catch(e){} }
+        b.classList.add("leida");
+        abrirCarta(c, b);
+      };
+      g.append(b);
+    });
+    s.append(g);
+    (viajeEl || document.querySelector(".marco")).insertAdjacentElement("afterend", s);
+  }
+  function abrirCarta(c, origen){
+    pararEscritura(); pararJuego(); pararTodo();
+    carta.innerHTML = ""; carta.classList.remove("con-nota","carta-antigua"); carta.classList.add("carta-sobre");
+    const x = el("button","cerrar","×"); x.setAttribute("aria-label","Cerrar"); x.onclick = cerrar;
+    const papel = el("div","cs-papel");
+    papel.append(el("div","cs-kick","Ábrela cuando…"), el("h2",null,c.titulo || ""), el("p","cs-txt",c.texto || ""), el("div","cs-firma","Tu chico 🩷"));
+    papel.querySelector("h2").id = "carta-titulo";
+    carta.append(x, el("div","big-icono",c.icono || "💌"), papel);
+    velo.classList.add("visible"); carta.scrollTop = 0;
+    if (!reduce) {
+      vuelo(origen, false);
+      papel.animate([{transform:"translateY(70px) scale(.7)",opacity:0},{transform:"translateY(-6px) scale(1.02)",opacity:1,offset:.7},{transform:"none",opacity:1}],
+        {duration:800, delay:250, easing:"cubic-bezier(.2,.9,.3,1.1)", fill:"backwards"});
+    }
+  }
+
+  /* ===================== BULNES EN EL MAPA DEL VIAJE ===================== */
+  function ponerBulnesEnMapa(){
+    if (!viajeEl) return;
+    const svg = viajeEl.querySelector(".mapa"), [x,y] = PX(-4.82,43.24);
+    svg.insertAdjacentHTML("beforeend", `<g class="m-bulnes" role="button" tabindex="0" aria-label="Bulnes, donde empezó todo">
+        <circle cx="${x}" cy="${y}" r="13" fill="transparent"/>
+        <g transform="translate(${x} ${+y + 4})"><path class="m-cor" d="M0 0C-4-3-7-6.5-5-9.5C-3.3-11.5-1-11-0-9C1-11 3.3-11.5 5-9.5C7-6.5 4-3 0 0Z"/></g>
+        <text x="${x}" y="${+y - 12}" text-anchor="middle" class="m-bul-txt">Aquí empezó todo</text></g>`);
+    const g = svg.querySelector(".m-bulnes");
+    let globo = null;
+    const abrir = e => {
+      e.stopPropagation();
+      if (globo) { globo.remove(); globo = null; return; }
+      globo = el("div","m-globo");
+      const img = el("img"); img.alt = "Bulnes"; ponerSrc(img, "bulnes.jpg");
+      globo.append(img, el("span",null,"Bulnes · donde empezó todo ❤️"));
+      viajeEl.style.position = "relative"; viajeEl.append(globo);
+      const r = g.getBoundingClientRect(), rv = viajeEl.getBoundingClientRect();
+      globo.style.left = Math.max(8, Math.min(rv.width - 178, r.left - rv.left - 80)) + "px";
+      globo.style.top = (r.bottom - rv.top + 6) + "px";
+      if (!reduce) globo.animate([{transform:"scale(.6)",opacity:0},{transform:"none",opacity:1}],{duration:300, easing:"cubic-bezier(.2,1.3,.4,1)"});
+      setTimeout(() => document.addEventListener("click", function f(){ if (globo) { globo.remove(); globo = null; } document.removeEventListener("click", f); }), 0);
+    };
+    g.addEventListener("click", abrir);
+    g.addEventListener("keydown", e => { if (e.key === "Enter") abrir(e); });
   }
 
   /* ---------- Construir las puertas ---------- */
@@ -1774,29 +2584,40 @@
 
   function mostrar(n, origen, especial){
     const d = (C.dias && C.dias[n]) || {titulo:"Día " + n};
-    pararEscritura(); pararJuego();
+    pararEscritura(); pararJuego(); pararTodo();
     carta.innerHTML = "";
+    carta.classList.remove("carta-sobre");
     carta.classList.toggle("con-nota", !!d.nota);
+    carta.classList.toggle("carta-antigua", d.estiloCarta === "antigua");
     const x = el("button","cerrar","×"); x.setAttribute("aria-label","Cerrar"); x.onclick = cerrar;
     carta.append(x);
     if (d.nota) carta.append(el("div","postit",d.nota));
     if (d.icono) carta.append(el("div","big-icono",d.icono));
     carta.append(el("div","dia","Día " + n + " de diciembre"));
     const h = el("h2",null,d.titulo || ""); h.id = "carta-titulo"; carta.append(h);
-    if (d.foto) {
+    if (d.foto && !d.mapaBulnes) {
       if (d.rascar) carta.append(crearRasca(d.foto, n, d.titulo));
-      else { const img = el("img"); img.src = d.foto; img.alt = d.titulo || ""; img.loading = "lazy"; carta.append(img); }
+      else { const img = el("img"); ponerSrc(img, d.foto); img.alt = d.titulo || ""; carta.append(img); }
     }
-    let pEscribir = null;
+    const hueco = d.mapaBulnes ? el("div") : null;
+    if (hueco) carta.append(hueco);
+    let pEscribir = null, pTexto = null;
     if (d.texto) {
-      const pt = el("p",null,rellenar(d.texto,n)); carta.append(pt);
-      if ((n === 24 || d.escribir) && especial && !reduce) pEscribir = pt;
+      if (d.estiloCarta === "antigua") carta.append(crearCartaAntigua(rellenar(d.texto,n), especial && !reduce));
+      else {
+        const pt = el("p",null,rellenar(d.texto,n)); carta.append(pt); pTexto = pt;
+        if ((n === 24 || d.escribir) && especial && !reduce) pEscribir = pt;
+      }
     }
-    if (d.ruleta) carta.append(crearRuleta(Object.assign({tipoVale:d.tipoVale}, d.ruleta), n));
+    if (hueco) hueco.replaceWith(...crearMapaBulnes(d, n, pTexto));
+    if (d.audio) carta.append(crearTocadiscos(d.audio));
+    if (d.libro) carta.append(crearLibroMini(d.libro));
+    if (d.ruleta) carta.append(crearRuleta(Object.assign({tipoVale:d.tipoVale, valeMeta:d.valeMeta}, d.ruleta), n));
     if (d.postal) carta.append(crearPostal(d.postal));
     if (d.juego === "churros") carta.append(crearJuegoChurros(d, n));
     else if (d.juego === "sushi") carta.append(crearJuegoSushi(d, n));
-    else if (d.vale) carta.append(crearVale(d.tipoVale, rellenar(d.vale,n), n));
+    else if (d.vale) carta.append(crearVale(d.tipoVale, rellenar(d.vale,n), n, d.valeNota, d));
+    if (d.dobleNada) carta.append(crearDobleNada(n));
     if (d.enlace && d.enlace.url) {
       const a = el("a","boton",d.enlace.texto || "Ábrelo"); a.href = d.enlace.url; a.target = "_blank"; a.rel = "noopener";
       carta.append(a);
@@ -1809,7 +2630,7 @@
       a.target = "_blank"; a.rel = "noopener";
       q.append(a); carta.append(q);
     }
-    if (C.firma) carta.append(el("div","firma",C.firma));
+    if (C.firma && !d.sinFirma) carta.append(el("div","firma",C.firma));
     if (especial && !reduce) carta.append(el("div","barrido"));
     velo.classList.add("visible");
     carta.scrollTop = 0;
@@ -1902,7 +2723,7 @@
       ],{duration:dur,delay:Math.random()*1400,easing:"linear",fill:"backwards"}).onfinish = () => p.remove();
     }
   }
-  function cerrar(){ pararEscritura(); pararJuego(); velo.classList.remove("visible"); }
+  function cerrar(){ pararEscritura(); pararJuego(); pararTodo(); velo.classList.remove("visible"); }
   velo.addEventListener("click", e => { if (e.target === velo) cerrar(); });
   document.addEventListener("keydown", e => { if (e.key === "Escape") cerrar(); });
 
@@ -1947,7 +2768,7 @@
   addEventListener("resize", tam); tam();
   if (!reduce) bucle();
 
-  crearViaje(); VUELO_LISTO = true; tic();
+  crearViaje(); ponerBulnesEnMapa(); crearCartas(); VUELO_LISTO = true; tic();
   $("#btnAnimos").addEventListener("click", darAnimos);
   cargarTiempo(); setInterval(cargarTiempo, 30*60*1000);
   pantallaLlegada();
